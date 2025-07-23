@@ -1,0 +1,40 @@
+# Ubuntu linux tmp files
+*.*~
+.fuse*
+
+# LaTeX documentation tmp and output files
+*.aux
+*.bcf
+*.bbl
+*.blg
+*.dvi
+*.gz
+*.lof
+*.log
+*.lot
+*.nav
+*.out
+*.pdf
+*.run.xml
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
+
+# Matlab autosave
+*.asv
+
+# Matlab data
+*.mat
+
+# Fig tex
+fig_tex/*.png
+fig_tex/*.tif
+fig_tex/*.tiff
+
+# Enable pdf figures and drawings
+!drawings/*.pdf
+!figures/*.pdf
+
+# GMSH
+*.msh

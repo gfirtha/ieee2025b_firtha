@@ -1,0 +1,8 @@
+* text=auto
+
+*.bib text eol=crlf
+*.tex text eol=crlf
+*.txt text eol=crlf
+*.m   text eol=crlf
+
+Makefile text eol=crlf
