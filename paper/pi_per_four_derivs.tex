@@ -1,0 +1,110 @@
+
+\appendix[Phase increment at the SSD endpoint]
+\paragraph{Virtual plane wave with no tapering applied}
+In the following the special case of a virtual plane wave, synthesized by a finite SSD with the length of $L_x^{\mathrm{SSD}}$ is investigated.
+The plane wave's propagation direction is perpendicular to the SSD ($k^P_x = 0, \, k^P_y = k$).
+The synthesis is referenced to a reference line a along $\yref$, and the synthesized field is investigated in the frontal reference position $\vxref = [0,\, \yref,\, 0]$.
+In this simple setup the synthesized field reads as 
+\begin{equation}
+  P(\vxref, \omega) = \int_{-L_x/2}^{L_x/2} \overbrace{\sqrt{ 8 \pi \ti k \yref }}^{D(\vxo, \omega)} \frac{\te^{- \ti k |\vxref - \vxo|}}{4 \pi |\vxref - \vxo|}  \td x_0,
+\end{equation}
+}
+with $|\vxref - \vxo| = \sqrt{ x_0^2 + \yref^2 }$.
+Since the amplitude of the target field at the reference position is unity, therefore, the cut-off wavenumber for the far-field approximation is simply given as
+\begin{equation}
+  k_{\mathrm{FF}} = \frac{1}{ \left( \int_{-L_x/2}^{L_x/2} \sqrt{ \frac{ \yref }{2 \pi}} \frac{1}{ |\vxref - \vxo|}  \td x_0 \right)^2}.
+\end{equation}
+For $\yref \gg L_x/2$ the amplitude changes only slightly over the integral path and the involved integral can be simply approximated as
+\begin{equation}
+  \small
+  \int_{-L_x/2}^{L_x/2} \frac{1}{ \sqrt{x_0^2 + \yref^2}}  \td x_0 = \frac{1}{\yref} \int_{-L_x/2}^{L_x/2} \frac{1}{ \sqrt{ \underbrace{\left(\frac{x_0}{\yref}\right)^2}_{\ll 1} + 1}}  \td x_0 \approx \frac{L_x}{\yref},
+\end{equation}
+resulting in the cutoff wavenumber
+\begin{equation}
+  k_{\mathrm{FF}} \approx 2 \pi \frac{\yref}{ L_x^2}.
+\end{equation}
+
+Now we are interested about the phase variation of the integrand on this cutoff frequency.
+In this frontal case the phase function is an even function of $x_0$, given merely by the phase of the Green's function $-k |\vxref - \vxo|$.
+The phase increment measured from the center of the SSD to each end of the SSD at the cutoff wavenumber is given by
+\begin{equation}
+  \Delta \phi = k_{\mathrm{FF}} \left( \sqrt{\left(\frac{L_x}{2}\right)^2 + \yref^2} -  \yref \right).
+  \label{eq:deltaPhi}
+\end{equation}
+Again, in case of $L_x \ll \yref$, distance of the reference point and the SSD endpoint can be expanded into a binomial (MacLaurin) series, which up to the leading order reads as
+\begin{multline}
+  \yref \sqrt{\left(\frac{L_x}{2 \yref}\right)^2 + 1} \approx \\ \approx \yref \left( 1 + \frac{1}{2} \left(\frac{L_x}{2 \yref}\right)^2 - \frac{1}{8}  \left(\frac{L_x}{2 \yref}\right)^4 + ...\right) = \\
+  = \yref  + \frac{L_x^2}{8 \yref}. 
+\end{multline}
+Substituting back to \eqref{eq:deltaPhi} gives us the phase increment
+\begin{equation}
+  \Delta \phi = k_{\mathrm{FF}} \left( \frac{L_x^2}{8 \yref} \right) = 2 \pi \frac{\yref}{ L_x^2} \, \frac{L_x^2}{8 \yref} = \frac{\pi}{4}.
+\end{equation}
+This equation states that independently of the actual receiver position, in the far field of the SSD the phase change towards the SSD endpoint at the cutoff frequency/wavenumber is identically given by $\frac{\pi}{4}$.
+
+\paragraph{Virtual plane wave with tapering}
+As a more complicated extension let's assume an arbitrary tapering window applied to the driving functions $w(x_0)$, resulting in the synthesized field
+\begin{equation}
+  P(\vxref, \omega) = \int_{-L_x/2}^{L_x/2} \overbrace{ w(x_0)\sqrt{ 8 \pi \ti k \yref }}^{D(\vxo, \omega)} \frac{\te^{- \ti k |\vxref - \vxo|}}{4 \pi |\vxref - \vxo|}  \td x_0,
+\end{equation}
+Furthermore, let's introduce an effective SSD length defined as
+\begin{equation}
+  L_{x,\mathrm{eff}} = \int_{-\frac{Lx}{2}}^{\frac{L_x}{2}} w(x_0) \td x0!
+\end{equation}
+By following the same derivation as above the farfield cut-off frequency reads as
+\begin{equation}
+  k_{\mathrm{FF}} \approx 2 \pi \frac{\yref}{ L_{x,\mathrm{eff}}^2}.
+\end{equation}
+Finally, investigating the phase increment up to the point $L_{x,\mathrm{eff}}/2$ yields
+\begin{equation}
+  \Delta \phi = k_{\mathrm{FF}} \left( \sqrt{\left(\frac{L_{x,\mathrm{eff}}}{2}\right)^2 + \yref^2} -  \yref \right) \approx \frac{\pi}{4}.
+\end{equation}
+Hence, when a slowly changin tapering is applied to the driving functions, when the receiver is sufficiently far from the SSD, the phase change at the end of the effective length equals $\pi/4$ independently of the actual source position. 
+
+\paragraph{Virtual point source}
+Finally, assume a virtual point source located at $\vxs = [0,\, -\ys,\, 0]$.
+The synthesized field with applying tapering, again, with referencing the synthesis to a parallel reference line is given by
+\begin{multline}
+  P(\vxref, \omega) = \sqrt{\ti k}  \frac{\ys}{4\pi\sqrt{2\pi}}\sqrt{  \frac{\yref}{\yref+\ys}} \\ \int_{-L_x/2}^{L_x/2} w(x_0)\frac{\te^{- \ti k |\vxo - \vxs|}}{ |\vxo-\vxs|^{3/2}}   \frac{\te^{- \ti k |\vxref - \vxo|}}{ |\vxref - \vxo|}  \td x_0,
+\end{multline}
+Now the amplitude of the integrand is approximated as 
+\begin{multline}
+  \small
+  \int_{-L_x/2}^{L_x/2} \frac{w(x_0)}{ \sqrt{x_0^2 + \ys^2}^{3} \sqrt{x_0^2 + \yref^2}}  \td x_0 = \\
+  \frac{1}{\ys^{3/2}\yref} \int_{-L_x/2}^{L_x/2} \frac{w(x_0)}{ \sqrt{ \left(\frac{x_0}{\ys}\right)^2 + 1}^{3/2} \sqrt{ \left(\frac{x_0}{\yref}\right)^2 + 1}}  \td x_0 \\ 
+  \approx \frac{L_{x,\mathrm{eff}}}{\ys^{3/2}\yref},
+\end{multline}
+and the synthesized field at $\omega = 0$ is approximated as
+\begin{equation}
+  \scriptsize
+  P(\vxref, 0) = \sqrt{\ti k}  \frac{L_{x,\mathrm{eff}}}{4\pi\sqrt{2\pi}}\sqrt{  \frac{1}{\ys\yref (\yref+\ys)}}.
+\end{equation}
+The target field in the present setup is given by
+\begin{equation}
+  P_{\mathrm{target}}(\vxref, 0) = \frac{1}{4\pi}\frac{1}{\yref+\ys},
+\end{equation}
+hence the synthesized field normalized by the target field is given by
+\begin{equation}
+  \scriptsize
+  \hat{P}(\vxref, 0) = \sqrt{\ti k}  \frac{L_{x,\mathrm{eff}}}{\sqrt{2\pi}}\sqrt{  \frac{\yref+\ys}{\ys\yref }}.
+\end{equation}
+Again, the cutoff wavenumber is, therefore, approximated as
+\begin{equation}
+  k_{\mathrm{FF}} \approx \frac{2\pi}{L_{x,\mathrm{eff}}^2} \frac{\ys \, \yref}{\yref+\ys}.
+  \label{eq:k_cutoff_ps}
+\end{equation}
+
+The phase change up to the endpoint of the SSD reads as
+\begin{equation}
+  \scriptsize
+  \Delta \phi = k_{\mathrm{FF}} \left( \sqrt{\left(\frac{L_{x,\mathrm{eff}}}{2}\right)^2 + \yref^2} + \sqrt{\left(\frac{L_{x,\mathrm{eff}}}{2}\right)^2 + \ys^2} -  \yref - \ys \right).
+\end{equation}
+which by using its MacLaurin series can be written by 
+\begin{equation}
+  \Delta \phi = k_{\mathrm{FF}} \left( \frac{L_{x,\mathrm{eff}}^2}{8 \yref} + \frac{L_{x,\mathrm{eff}}^2}{8 \ys}  \right) =  k_{\mathrm{FF}} \frac{L_{x,\mathrm{eff}}^2}{8}\left(  \frac{\yref+\ys}{\yref \ys}  \right) 
+\end{equation}
+Finally, by substituting back \eqref{eq:k_cutoff_ps}
+\begin{equation}
+  \Delta \phi =  \frac{2\pi}{L_{x,\mathrm{eff}}^2} \frac{\ys \, \yref}{\yref+\ys} \frac{L_{x,\mathrm{eff}}^2}{8}\left(  \frac{\yref+\ys}{\yref \ys}  \right) = \frac{\pi}{4}.
+\end{equation}
+Again, it is verified analytically that in case of the synthesis of a virtual point source when the receiver and the virtual source is sufficiently far from the SSD (further than the effective SSD length) the cutoff frequency is given by that point where the phase change at the SSD's endpoint equals to $\pi/4$, i.e. the SSD contains the quater of the wavelength.

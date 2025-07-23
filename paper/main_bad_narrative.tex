@@ -1,0 +1,306 @@
+\documentclass[lettersize,journal]{IEEEtran}
+\usepackage{amsmath,amsfonts}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{array}
+\usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
+\usepackage{textcomp}
+\usepackage{stfloats}
+\usepackage{url}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage{cite}
+\usepackage{overpic}
+\usepackage{xcolor}
+\hyphenation{op-tical net-works semi-conduc-tor IEEE-Xplore}
+% updated with editorial comments 8/9/2021
+\input{scidefs}
+\usepackage{amssymb}
+
+\let\oldemptyset\emptyset
+\let\emptyset\varnothing
+
+\begin{document}
+
+\title{Limitations of Wave Field Synthesis Part II:\\low-frequency limits}
+
+\author{Gergely Firtha
+\thanks{Manuscript received April 19, 2021; revised August 16, 2021.}}
+
+
+% The paper headers
+\markboth{Journal of \LaTeX\ Class Files,~Vol.~14, No.~8, August~2021}%
+{Shell \MakeLowercase{\textit{et al.}}: A Sample Article Using IEEEtran.cls for IEEE Journals}
+
+\IEEEpubid{0000--0000/00\$00.00~\copyright~2021 IEEE}
+% Remember, if you use this you must call \IEEEpubidadjcol in the second
+% column for its text to clear the IEEEpubid mark.
+
+\maketitle
+
+\begin{abstract}
+\end{abstract}
+
+
+\begin{IEEEkeywords}
+Article submission, IEEE, IEEEtran, journal, \LaTeX, paper, template, typesetting.
+\end{IEEEkeywords}
+
+\section{Introduction}
+
+\section{Theoretical basics}
+
+\subsection{Problem formulation}
+Assume an arbitrary 3D sound field given by its general polar form
+\begin{equation}
+  P(\vx,\omega) = A^P(\vx) \, \te^{\ti k \phi^P(\vx)},
+  \label{eq:general_field}
+\end{equation}
+with $\vx = \posvec{3}{x}{y}{z}$ being an arbitrary 3D position, $k = \frac{\omega}{c}$ being the acoustic wavenumber and $c$ is the speed of sound.
+The wavefronts are defined as isophase surfaces ($\phi^P = \mathrm{constant}$), that can be characterized by its local propagation direction and curvature in an intrinsic (ray-centered) coordinate frame:
+
+The normalized local wavenumber vector is defined as 
+\begin{equation}
+  \vhk^P(\vx) = -\nabla_{\vx} \phi^P(\vx), \hspace{5mm} |\vhk^P(\vx)| = 1
+  \label{eq:eikonal}
+\end{equation}
+being a unit vector pointing towards maximum phase advance, i.e. the local propagation direction of the sound field, while the curvature of the wavefront is given by the second derivative as
+\begin{equation}
+  \kappa^P_{1,2}(\vx) = \frac{1}{\rho^P_{1,2}(\vx)} = - \mathrm{eig}\left( \frac{\partial^2 \phi^P(\vx)}{ \partial \vx_i \partial \vx_j} \right).
+\end{equation}   
+
+The gradient of the field can be expressed in its polar form by
+\begin{multline}
+  \nabla_{\vx} P(\vx) = P'(\vx)  = \left(\frac{\nabla_{\vx} A^P(\vx)}{A^P(\vx)} + \ti k \nabla_{\vx} \phi^P(\vx) \right)P(\vx) = \\
+  = \left(\overline{\kappa}^P(\vx) + \ti k \right) \vhk^P(\vx) P(\vx),
+  \label{eq:gradient}
+\end{multline}
+with $\overline{\kappa}^P(\vx)$ being the mean curvature of the wavefront.
+
+In the aspect of sound field synthesis our aim is to reproduce this wavefront by driving a theoretically continuous contour of secondary point sources located along $C$---termed as the secondary source distribution (SSD)---by the driving functions $D(\vxo,\omega)$ so that the synthesized field given by
+\begin{equation}
+  \Psynth(\vx,\omega) = \oint_C D(\vxo, \omega) G(\vx-\vxo) \td s(\vxo),
+  \label{eq:synth_field}
+\end{equation}
+coincides with the target sound field.
+Here $G(\vx-\vxo) = \frac{1}{4\pi} \frac{\te^{-\ti k |\vx-\vxo|}}{|\vx-\vxo|}$ denotes the 3D free-field Green's function (describing the field of a point source) and $s(\vxo)$ is that arc length along the SSD.
+The contour of secondary sources are located in the horizontal plane consisting the listener's ear fixed to $z = 0$, termed as the synthesis plane.
+The geometry under discussion is illustrated in Figure \ref{Fig:geometry}.
+
+\begin{figure} 
+  \begin{center}
+    \begin{overpic}[width = 1\columnwidth ]{figs/WFS_geometry_2b.png}
+	\scriptsize
+	\put(61.5,40.5){$\vxo$}
+	\put(44,40){$\vxref(\vxo)$}
+	\put(24,35){$\vx$}
+	\put(3,19){synthesis plane}
+	\put(40,22){$C$: SSD contour}
+	\put(8,50){$S$: integral surface}
+	\put(80.5,71){reference curve}
+	\put(80.5,61.5){active SSD}
+	\put(56,34){$\vhk^P(\vxo)$}
+	\put(84,47){$x$}
+	\put(95,29){$y$}
+	\put(97,58){$z$}
+	\put(81,42){$\vxs$}
+	%\put(72,37){$\rho^P(\vxo)$}
+  \put(80,66){{\fontsize{7pt}{\baselineskip}
+  \selectfont \parbox{4cm}{vertical integral\\path}  }}
+	\end{overpic}
+\end{center}
+\caption{ Geometry for deriving the 2.5D WFS driving functions.}
+	\label{Fig:geometry}
+\end{figure}
+
+
+\subsection{The Stationary Phase Approximation}
+
+The stationary phase approximation is a commonly used technique for evaluating highly oscillating integrals asymptotically.
+The method yields an approximate for Fourier type integrals given by
+\begin{equation}
+  I = \oint_C A(s) \te^{\ti k \phi(s)} \td s. %\sim \sum_{i = 0}^{\infty} I_i(k^{i+0.5})
+  \label{eq:SPA_int}
+\end{equation}
+The approximation relies on the idea that under high frequency conditions rapid oscillations may cancel out and the integral is dominated by positions in the integral path where the phase does not change, termed as the \emph{stationary positions}.
+The stationary positions are found where the phase gradient vanishes, i.e. generally $|\nabla_{s} \phi(\mathbf{s^*})| = 0$ holds, written as $\phi'_s(s^*) = 0$ in 1D.
+Within the present context it is enough to investigate the one-dimensional SPA due to the separability of the involved surface integrals in the geometry under discussion.
+
+The derivation of the SPA relies on the Taylor's expansion of both the phase and the amplitude function, performing analytical Gaussian integration termwise and collecting same powers of $k$ together to rewrite the original integral as a power series of $k$, given by 
+{\fontsize{9pt}{\baselineskip}
+\selectfont
+\begin{multline}
+  I \sim % = \sum_{i = 0}^{\infty} \frac{I_i}{\left( k |\Phi^{''}(s^*)| \right)^{i+0.5}} \sim \\
+  \overbrace{A(s^*) \te^{\ti k \Phi(s^*)} \sqrt{\frac{2\pi}{k |\Phi^{''}(s^*)|}} \te^{\ti \frac{\pi}{4}\mathrm{sign}(\Phi^{''}(s^*))}}^{I_0} \cdot \\ \cdot \left(1 + \frac{I_1}{\ti k |\Phi^{''}(s^*)|} +  \frac{I_2}{ ( \ti  k |\Phi^{''}(s^*)|)^2} + ... +  \frac{I_i}{ (\ti  k |\Phi^{''}(s^*)|)^i}  \right)
+  \label{eq:fullSPA}
+\end{multline}}
+where $\sim$ denotes equality at $k \rightarrow \infty$.
+As an example, the first non-leading term is given by
+\begin{equation}
+  \footnotesize
+  I_1 = 
+  \frac{1}{2}\frac{A^{''}(s^*)}{A(s^*)} - \frac{ \frac{1}{8}  \Phi^{(4)}(s^*) + \frac{1}{2} \Phi^{'''}(s^*)A'(s^*)/A(s^*)}{\Phi^{''}(s^*)} + \frac{\frac{5}{24} \Phi^{'''}(s^*)^2 }{\Phi^{''}(s^*)^2},
+\end{equation}
+and where each term $I_i$ can be written as a further power series of $\frac{1}{\Phi^{''}(s^*)}$.
+The leading term $I_0$ is the usual form of the stationary phase approximation of the integral, emerging from the Taylor's approximation of the ampltideu and phase up to the leading and the second order respectively.
+Thus, the integral of the function is approximated by its stationary value along with a curvature correction term.
+
+The low frequency validity of the above approximation is of central importance of the present contribution, and will be discussed in the following sections when the formula is applied to integral formulations of sound fields. 
+
+\subsection{The Kirchhoff-approximation and the Rayleigh integral}
+
+The Kirchhoff approximation (KA) is a well known high frequency integral formulation of sound fields, applied frequently for solving scattering problems from arbitrary shaped objects.
+The KA stems from the Kirchhoff-Helmholtz integral of an arbitrary sound field written in terms of a surface integral
+{\fontsize{8pt}{\baselineskip}
+\selectfont
+\begin{multline}
+  \small
+  P(\vx) = -\oint_\Omega P'_{\mathrm{n}}(\vxo, \omega) G(\vx-\vxo) - P(\vxo, \omega) G_{\mathrm{n}}'(\vx-\vxo) \td S(\vxo) \approx \\
+           \oint_\Omega \ti k  \left( \hkn^P(\vxo) -  \hkn^G(\vx-\vxo) \right)  P(\vxo, \omega) G(\vx-\vxo) \td S(\vxo),
+\end{multline}}
+where the expression for gradient given by \eqref{eq:gradient} was used with assuming that $\overline{\kappa}^P(\vxo) \ll k$, being clearly a local plane wave approximation \cite[Eq. 3.13.]{Firtha2019phd}.
+Within the validity of the SPA the above integral can be approximated around its stationary value which is defined as the point where $\vhk^P(\vxo) = \vhk^G(\vx-\vxo)$, restricting the integral path to parts of the surface which serve as a stationary point to any receiver position inside the enclosure.
+Thus, the above integral can be expressed as 
+{\fontsize{8pt}{\baselineskip}
+\selectfont
+\begin{multline}
+  P(\vx) \approx  -2 \oint_\Omega  w(\vxo)  \ti k \hkn^P(\vxo) P(\vxo, \omega) G(\vx-\vxo) \td S(\vxo) \approx \\ \approx -2 \oint_\Omega   w(\vxo)  P'_{\mathrm{n}}(\vxo, \omega) G(\vx-\vxo) \td S(\vxo).
+  \label{eq:KA}
+\end{multline}}
+with
+\begin{equation}
+  w(\vxo) = 
+  \begin{cases}
+    1  \hspace{5mm} \text{if} \hspace{1cm} \hkn^P(\vxo)\geq 0, \\
+    0   \hspace{5mm} \text{otherwise}.
+  \end{cases}
+  \label{eq:win}
+\end{equation}
+Integral \eqref{eq:KA} is the Kirchhoff approximation of the radiated sound field inside the enclosure.
+The second line gives the target field with equality when the integral surface is degenerated to be an infinite plane, termed as the Rayleigh integral representation of the sound field.
+
+Traditionally the Kirchhoff approximation is often termed as the \emph{tangent plane approximation} of the sound field, since the elements of the integral surface are assumed to be locally planar, resulting in the present Rayleigh-like approximation.
+The KA is known to be an inherent high-frequency approximation of the target sound field neglecting diffractional effects (creeping rays) and secondary reflections from one part of the integral surface to the other.  
+
+In the present treatise we are interested about the low frequency validity limit of the Kirchhoff approximation.
+The general validity of the KA is a complex, extensively researched question, however, with no general analytical formulation available, so far.
+The question frequently arises in the aspect of calculating fields scattered from rough, typically non-convex surfaces.
+Several aspects regarding its validity are the following:
+\begin{itemize}
+  \item by omitting the amplitude term in \eqref{eq:gradient} we inherently restrict our investigation to the far-field of the target field, assuming locally planar waves.
+  \item it is a standard requirement for the KA that the curvature of the wavefront has to be smaller than the acoustic wavelength in order to the tangent plane assumption hold.
+  Standard conditions for this are given e.g by \cite{Franco2017, Fung1981} requiring 
+  \begin{equation}
+      2 k \hkn^{P}(\vxo) \rho_{\mathrm{SSD,max}} \gg 1, \text{or} \hspace{5mm} 2 k \hkn^{P}(\vxo)^3 \rho_{\mathrm{SSD,max}} \gg 1
+  \end{equation}
+  to hold, with $\rho_{\mathrm{SSD,max}} $ being the maximal one from the two principal radii of the integral (scatterer / SSD) surface, however, recent studies has revealed that the above conditions tend to severly underestimate the actual critical frequency \cite{Eaton2006}.
+  \item Finally the extension of the integral surface (scatterer) must be larger than the acoustic wavelength, formulated simply by $k L\gg 1$ with $L$ being the ,,length'' of the scatterer, being the most crucial condition in the aspect of WFS as it will be shown in the following sections.
+\end{itemize}
+Nevertheless, it is clear that the above conditions for the KA perfectly align with the validity conditions for the stationary phase approximation:
+in the aspect of SPA we require the amplitude of the integrand to change slower than the phase around the stationary point, being valid for virtual plane waves arriving on locally planar surfaces, while the length of integration shoud be large enough in order to the phase function change, thus cancellation can occur.
+Finally, in the context of the SPA the omission of diffractional waves are due to the lack of the evaluation of the effect of the critical positions where discontinuity occur in the integral path, investigated in details in the previous part of the present article series \cite{Firtha2025_ieee_a}, while secondary reflections are neglected by introducing the window function \eqref{eq:win} again, based on stationary phase analysis.
+Therefore, in the following we investigate the vality of the KA and the SPA adjointly.
+  
+\subsection{The 2.5D WFS driving functions}
+In WFS theory the SPA is applied to the Kirchhoff approximation in order to derive the required driving functions for an arbitrary SSD contour and allowing the further investigation of the synthesized field.
+
+The geometry under discussion, depicting the 3D integral surface is shown in \ref{Fig:geometry}, with the window function \eqref{eq:win} denoted by pale red surface.
+In the present case the geometry is chosen to be invariant along the vertical axis, hence, the integral can be split to a vertical and a horizontal integral ($\int_\Omega ... \td S(\vxo) = \int_{C} \int_{-\infty}^{\infty} ... \td z_0 \td s(x_0,y_0)$).
+In order to arrive at suitable driving functions first the KA is evaluated along the vertical dimension by the SPA
+
+Again, the stationary position for the entire surface integral is found where $\vhk^P(\vxo^*) = \vhk^G(\vx-\vxo^*)$ holds, i.e. where the local propagation direction of the Green's function is aligned with that of the virtual field along the SSD.
+For virtual fields located in the the synthesis plane with $\hat{k}^P_z = 0$ the vertical stationary position is identically found at $z^* = 0$ as it is illustrated in Figure \ref{Fig:geometry}.
+
+The required vertical second phase derivative is given by $\phi^{P+G''}_{zz}  =  -\left( \frac{1}{\rho^G(\vx-\vxo)} + \frac{1}{\rho^P_v(\vxo)} \right)$ as given in \cite{Firtha2025_ieee_a}.
+Furthermore, as a further, horizontal SPA it is exploited that each SSD element at $\vxo$ dominates the synthesized field at those receiver positions for which this SSD element serves as the stationary position, allowing one to assign a unique reference position to each SSD element denoted by $\vxref(\vxo)$ in Figure \ref{Fig:geometry}.
+With these considerations the final form of the driving functions reads as
+\begin{multline}
+  \small
+  D(\vxo,\omega) = w(\vxo) \sqrt{8\pi \ti k} \cdot
+  \\  \cdot \sqrt{\frac{ \rho^P_v(\vxo) \, \rho^G(\vxref(\vxo)-\vxo) }{ \rho^P_v(\vxo) + \rho^G(\vxref(\vxo)-\vxo)} } \hkn^P(\vxo) P(\vxo, \omega),
+  \label{eq:driv_fun}
+\end{multline}
+with $\rho^G(\vxref(\vxo)-\vxo) = |\vxref(\vxo)-\vxo|$ being the reference distance for each SSD element.
+Note that the above referencing strategy is equivalent with the stationary assumptions performed in the derivation of the KA from the KHIE. 
+
+As investigated in \cite{Firtha2025_ieee_a} in details the synthesized field can be evaluated analytically by performing a horizontal SPA to the integral description of the synthesized field, taking merely the stationary positions into consideration, neglecting diffractional waves.
+The second phase derivative along the SSD contour is given by
+{\fontsize{9pt}{\baselineskip}
+\selectfont
+\begin{multline}
+%  \phi^{(P+G)}_{ss}(\vxo^*) = -\hat{k}^P_{\mathrm{n}}(\vxo^*)^2\left(\frac{ \rho^P_h(\vxo^*) + \rho^G(\vx-\vxo^*) }{\rho^P_h(\vxo^*) \, \rho^G(\vx-\vxo^*)}\right).
+  \phi^{(P+G)}_{ss}(\vxo^*) = \\=
+   -\hat{k}^P_{\mathrm{n}}(\vxo^*)^2\left(\kappa^P_h(\vxo^*) + \kappa^G(\vx-\vxo^*)\right) - 2\hat{k}^P_{\mathrm{n}}(\vxo^*) \kappa^{\mathrm{SSD}}(\vxo^*).
+   \label{eq:tangent_plane}
+\end{multline}}
+By assuming that the SSD is locally plane (see requirements for the KA), i.e. $2\hat{k}^P_{\mathrm{n}}(\vxo^*) \kappa^{\mathrm{SSD}}(\vxo^*) \ll \hat{k}^P_{\mathrm{n}}(\vxo^*)^2\left(\kappa^P_h(\vxo^*) + \kappa^G(\vx-\vxo^*)\right)$ the synthesized field reads as
+{\fontsize{8pt}{\baselineskip}
+\selectfont
+\begin{multline}
+  \Psynth(\vx,\omega) \sim  \underbrace{w(\vxo^*)
+  \sqrt{\frac{ \rho^G(\vxref(\vxo^*)-\vxo^*) }{ \rho^P_v(\vxref(\vxo^*))} }
+  \sqrt{\frac{ \rho^P_v(\vx)}{ \rho^G(\vx-\vxo^*) } }}_{A_0(\vx)}
+   P(\vx,\omega)
+   \label{eq:WFS_amp_dist} 
+\end{multline}}
+matching the target virtual field along the contour defined by the set of all $\vxref(\vxo^*)$-s as long as $w(\vxo^*) = 1$, i.e. in the illuminated area.
+
+In the following these results are utilized in order to approximate the lower frequency limit of WFS.
+
+\section{Low frequency limits of WFS}
+
+As presented in the foregoing WFS theory incorporates the following high frequency / far field approximations:
+\begin{itemize}
+  \item The starting point of the derivation was the high frequency form of the Kirchhoff approximation, which is itself a high frequency approximation in case of curved SSDs,
+  \item As a further, near field approximation the amplitude term was neglected from the target field gradient \eqref{eq:gradient}.
+  \item Finally from this approximate formulation WFS driving functions were yielded by a consequtive vertical and horizontal application of the SPA.
+\end{itemize}
+In this section it is verified that the valdity region of the KA and SPA are highly cojointed, furthermore, the dimensionality reduction from a surface to a contour integral (vertical SPA) validates the neglection of the near-field contribution as low frequency region would be extremely boosted due to the application of the SPA below its region of validty.
+
+\subsection{Local low frequency limits}
+First the local validity of the SPA is investigated briefly.
+
+The validty of the stationary phase approximation is a complex problem that would require the careful investigation of the phase and amplitude relations of the entire integral path \cite{ChassandeMottin1999, ChassandeMottin6936}.
+In the context of WFS over the integral path the amplitude must be a smooth function compared to the phase so that phase cancellation can occur.
+With keeping in mind that the amiplitude of the integrand is the product of the virtual field and the Green's function at the receiver position while the phase is the sum of the involved phases this requirement may be violated by 
+\begin{itemize}
+  \item virtual sources and receivers in the proximity of the SSD due to the rapid amplitude change in the nearfield
+  \item focused sources due to the decrese in phase change over the SSD
+  \item highly curved SSDs for the same reason as focused sources 
+\end{itemize}
+
+As a straightforward strategy one may compare the leading term and the first order term in the SPA given by \eqref{eq:fullSPA}: as an obvious requirement it is demanded that the zeroth order term dominate over higher order term in the integral's series expansion.
+
+As the most rough approximation one may necessitate that 
+\begin{equation} 
+  1 \gg \frac{1}{k |\Phi^{''}(s^*)|}
+\end{equation}
+should hold, exploiting the fact that powers $|\Phi^{''}(s^*)|$ is present in all the terms of $I_1$ in the denominator. 
+Restricting our investigation mainly to the horizontal SPA we can substitue the expression for the second derivative given in \eqref{eq:tangent_plane}.
+By assuming that both the receiver and the virtual source is far from the SSD ($\kappa^P \approx \kappa^G \approx 0$) the above condition translates to 
+\begin{equation} 
+  1 \gg \frac{1}{k 2\hat{k}^P_{\mathrm{n}}(\vxo^*) \kappa^{\mathrm{SSD}}(\vxo^*)}
+\end{equation}
+
+A more precise low frequency limit would be given by accounting for each term in $I_1$ requiring $1 \ll \frac{|I_1|}{k |\Phi^{''}(s^*)|}$ to hold .
+This would result in pointwise local frequency limit for each SSD element both regarding the vertical and the horizontal SPA.
+The approach is detailed in \cite{Firtha2025_daga}, giving a good approximation for the lower frequency limit in case of an infinite linear SSD where truncation artifacts are not prominent along with insight to the above requirements for the SPA validity.
+However, as it is highlighted in the foregoing in practical WFS scenarios the physical extent of the SSD dominates the low frequency limit of applicability, therefore, in the following we formualte well useable high frequency condiitons for the truncated SSD case. 
+
+\subsection{Global low frequency limit for the KA}
+
+\subsection{Global low frequency limit for the SPA}
+
+\section{Conclusion}
+
+\section*{Acknowledgments}
+This work was supported by the János Bolyai Research Scholarship of the Hungarian Academy of Science and by the OTKA PD-143129 and OTKA K-143436 grants.
+
+%\input{pi_per_four_derivs}
+%\paragraph{Arbitrary virtual source}
+\bibliographystyle{IEEEtran}
+\bibliography{dissertation}
+
+\end{document}
+
+
