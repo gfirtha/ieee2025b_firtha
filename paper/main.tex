@@ -614,15 +614,6 @@ From the effective window length the lower cutoff frequencies can be calculated 
 
 \section{Application examples}
 
-\begin{figure} 
-  \begin{center}
-    \begin{overpic}[width = 1\columnwidth ]{figs/Psynth_linear_ps.png}
-	\end{overpic}
-\end{center}
-\caption{Geometry for deriving 2.5D Kirchhoff approximation and WFS driving functions.}
-	\label{Fig:Psynth_linear}
-\end{figure}
-
 \subsection{Cutoff freuqency for simple WFS geometries}
 Next the application of the previous results is investigated in simple practical WFS scenarios: in case of the syntehsis of a point source and a plane wave by using linear and circular SSDs.
 
@@ -630,20 +621,35 @@ Next the application of the previous results is investigated in simple practical
 For the case of a virtual   point source located at $\vxs = \posvec{3}{x_s}{y_s}{0}$ the principle radii and the local wavenumber vector specializes to $\rho^P_{\mathrm{v/h}}(\vx) = |\vx-\vxs|$, $\vk^P(\vx) = \frac{\vx-\vxs}{|\vx-\vxs|}$.
 The amplitude of the integrand describing the synthesized field is given by
 \begin{multline}
-A^{D\cdot P}(\vx,\vxo) = w(\vxo) \, \sqrt{\frac{|\vxref(\vxo)-\vxo| }{|\vxref(\vxo)-\vxo| + |\vxo - \vxs|}}  \cdot
+A^{D\cdot P}(\vx,\vxo) = w(\vxo) \, \sqrt{\frac{ |\vxref(\vxo)-\vxo| }{F\,|\vxref(\vxo)-\vxo| + |\vxo - \vxs|}}  \cdot
  \\  \frac{\left<\vxo-\vxs \cdot \mathbf{n}(\vxo) \right>}{|\vxo-\vxs|^{3/2}}  \frac{1}{|\vx-\vxo|},
 \end{multline}
-from which---once the reference curve is defined---the effective lengthes can be calculated according to \eqref{eq:Leff}.
+where $F$ is a focused flag, accounting for the synthesis of focused point sources as described in \cite{Firtha2025_ieee_a}.
+Once the reference curve is defined the effective lengthes can be calculated from the above amoplitude distribution according to \eqref{eq:Leff}.
 In order to evaluate the low frequency limit at $\vx$ one has to find the corresponding stationary SSD element $\vxo^*(\vx)$, which is simply given by the intersection of the SSD and the line connecting the virtual source and the receiver position, as shown e.g. in Fig~\ref{Fig:Psynth_linear}.
 Finally, the low frequency limit can be calculated as
 \begin{equation}
   \small
   k_{c,1/2}^{\mathrm{PS}}(\vx) = \frac{\pi}{2} 
-  \frac{|\vx-\vxo^*|\,|\vxo^* - \vxs| }{|\vx-\vxo^*| + |\vxo^* - \vxs|}
+  \frac{|\vx-\vxo^*|\,|\vxo^* - \vxs| }{F |\vx-\vxo^*| + |\vxo^* - \vxs|}
   \frac{1}{
    \hat{L}_{\mathrm{eff},1/2}(\vx) ^2 \hat{k}_{\mathrm{n}}(\vxo^*)^2  }.
   \label{eq:low_freq_limit_PS}
 \end{equation}
+
+
+\begin{figure} 
+  \begin{center}
+    \begin{overpic}[width = 1\columnwidth]{figs/Psynth_linear_ps.png}
+            \scriptsize \put(0,10){(a)}
+            \scriptsize \put(58,0){(b)}
+	\end{overpic}
+\end{center}
+\caption{Synthesis of a point source by using a finite linear SSD segment with the total length of 3~m.
+Figure (a) depicts the synthesized field along with the investigation setup 
+Figure (b) shows the frequency response in the frontal ($\vx_{\mathrm{r}_1} = \posvec{2}{0}{1}~\mathrm{m}$) and an examplery lateral ($\vx_{\mathrm{r}_1} = \posvec{2}{1.5}{1}~\mathrm{m}$) receiver position, both chosen to lie on the reference line in the present example, with highlighting the estimated lower cutoff frequencies.}
+	\label{Fig:Psynth_linear}
+\end{figure}
 
 \paragraph{Cutoff frequency for a virtual plane wave}
 For the special case of a virtual plane wave, propagating towards the direction $\vk^{\mathrm{PW}}$ for the principle radii $\rho^P_{\mathrm{v/h}}(\vx) =\infty$ holds, and the integrand amplitude is given by
@@ -665,7 +671,7 @@ The stationary SSD element $\vxo^*(\vx)$ is found from the intersection of the S
 Figure \ref{Fig:Psynth_linear} presents the case of synthesis of a point source applying a linear SSD along $y = 0$. 
 The reference curve is chosen to be a reference line, parallel to the SSD at $y = \yref$.
 This setup is usually termed as traditional WFS, being the geometry for which WFS theory was first formulated \cite{Berkhout1988}.
-In this geometry from simple triangule similarities $\frac{|\vxref(\vxo)-\vxo| }{|\vxref(\vxo)-\vxo| + |\vxo - \vxs|} = \frac{\yref}{\yref - \ys}$ holds for the virtual point source case.
+In this geometry from simple triangle similarities $\frac{|\vxref(\vxo)-\vxo| }{|\vxref(\vxo)-\vxo| + |\vxo - \vxs|} = \frac{\yref}{\yref - \ys}$ holds for the virtual point source case.
 
 Figure \ref{Fig:Psynth_circular} presents the case of synthesis applying a circular SSD centered at the origin with the radius $\Rssd = 2~\mathrm{m}$. 
 Figure (a), (b) and (c) show the synthesis of a plane wave, a point source and the special case of a focused point source respectively.
@@ -675,23 +681,28 @@ This results in a reference curve varying with the virtual source model (as desc
 \begin{figure} 
   \begin{center}
     \begin{overpic}[width = 1\columnwidth ]{figs/Psynth_circular_pw.png}
+      \scriptsize \put(0,0){(a)}
+      \scriptsize \put(45,0){(b)}
 	\end{overpic}
  \\ \vspace{5mm}
     \begin{overpic}[width = 1\columnwidth ]{figs/Psynth_circular_ps.png}
+      \scriptsize \put(0,0){(c)}
+      \scriptsize \put(45,0){(d)}
 	\end{overpic}
  \\ \vspace{5mm}
     \begin{overpic}[width = 1\columnwidth ]{figs/Psynth_circular_fps.png}
+      \scriptsize \put(0,0){(e)}
+      \scriptsize \put(45,0){(f)}
 	\end{overpic}
 \end{center}
-\caption{Geometry for deriving 2.5D Kirchhoff approximation and WFS driving functions.}
+\caption{Synthesis of a plane wave (a-b), an unfocused point source at $\vxs = \posvec{2}{3}{0}~\mathrm{m}$ (c-d) and a focused point source at at $\vxs = \posvec{2}{1}{0}~\mathrm{m}$ (e-f) by using a circular SSD with $\Rssd = 2~\mathrm{m}$.
+Figure (a,c,e) depicts the synthesized field along with the investigation setup 
+Figure (b,d,f) shows the frequency response in the frontal ($\vx_{\mathrm{r}_1} = \posvec{2}{0}{0}~\mathrm{m}$) and an examplery lateral ($\vx_{\mathrm{r}_1} = \posvec{2}{0}{1.5}~\mathrm{m}$) receiver position, both chosen to lie on the reference line in the present example, with highlighting the estimated lower cutoff frequencies.}
 	\label{Fig:Psynth_circular}
 \end{figure}
 
 In each case the frequency response of the synthesized field along with the estimated low frequency limits are illustrated in the frontal direction and in an examplary lateral direction.
-The frequency response is normalized by it's ideal high frequency value, given by
-\begin{equation}
-  \hat{P}_{\mathrm{synth}}(\vx,f) = \frac{P_{\mathrm{synth}}(\vx,f)}{1}
-\end{equation}
+The frequency response is normalized by it's ideal high frequency value, given by \eqref{eq:WFS_amp_dist}.
 The amplitude of the integrands are illustrated by white fill along the SSD contour for the lateral direction example.
 The resulting effective lengthes around the stationary position are denoted by a red contour along the SSD.
 
