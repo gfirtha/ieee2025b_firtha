@@ -50,9 +50,16 @@
 % column for its text to clear the IEEEpubid mark.
 
 \maketitle
+% === Abstract ===
 
 \begin{abstract}
+This paper establishes explicit low-frequency validity limits for 2.5D Wave Field Synthesis (WFS) derived from the Kirchhoff approximation. 
+We show that the breakdown at low frequencies is governed by the applicability of the stationary phase approximation (SPA) to the 2.5D Kirchhoff integral quantified via an effective window (aperture) length that compresses the influence of SSD size, tapering, referencing, and source/receiver proximity into a single quantity. 
+We derive closed-form cutoff conditions for arbitrary source models and listening positions yielding a critical wavenumber that scales with the inverse square of the effective length and recovers classical Fresnel-number/zone theory in frontal directions.
+The analysis predicts markedly higher cutoff for lateral positions and for sources/receivers near the SSD, and quantifies the impact of tapering and referencing schemes. 
+Simulations with linear and circular SSDs for plane, point, and focused sources validate the theory, including the intermediate transition band bounded by the two asymmetric effective lengths. 
 \end{abstract}
+
 
 
 \begin{IEEEkeywords}
@@ -63,13 +70,26 @@ Article submission, IEEE, IEEEtran, journal, \LaTeX, paper, template, typesettin
 
 Wave Field Synthesis (WFS) is an advanced spatial audio rendering technique capable of accurately synthesizing sound fields by employing a dense array of secondary loudspeakers distributed along a contour or surface, known as the secondary source distribution (SSD).
 
-Originally introduced by Berkhout in the late 1980s \cite{Berkhout1988, doi:10.1121/1.404755, Berkhout1993:Acoustic_control_by_WFS}, WFS utilizes the Huygens–Fresnel principle to reconstruct intended acoustic wavefronts over an extended listening area. Over subsequent decades, significant theoretical advancements have refined its mathematical framework \cite{Vogel1993:phd, Start1997:phd, Verheijen1997:phd, Sonke1998}, expanded its scope to include innovative virtual source paradigms such as focused and moving sources \cite{Spors2009focused, Wierstorf2013focused, Oldfield2013_FocusedWFS, Ahrens2008moving, doi:10.1121/1.4996126}, and systematically addressed various implementation constraints.
+Originally introduced by Berkhout in the late 1980s \cite{Berkhout1988, doi:10.1121/1.404755, Berkhout1993:Acoustic_control_by_WFS}, WFS utilizes the Huygens–Fresnel principle to reconstruct intended acoustic wavefronts over an extended listening area. 
+Over subsequent decades, significant theoretical advancements have refined its mathematical framework \cite{Vogel1993:phd, Start1997:phd, Verheijen1997:phd, Sonke1998}, expanded its scope to include innovative virtual source paradigms such as focused and moving sources \cite{Spors2009focused, Wierstorf2013focused, Oldfield2013_FocusedWFS, Ahrens2008moving, doi:10.1121/1.4996126}, and systematically addressed various implementation constraints.
 
-Despite these advances, WFS inherently possesses limitations, particularly at the lower end of its operational frequency range. The integral representations used—specifically the Kirchhoff approximation and the Rayleigh integral—are fundamentally high-frequency approximations. Consequently, low-frequency performance deteriorates below a geometry-dependent threshold \cite{Spors10ahrens:analysis}. Although this phenomenon is acknowledged within the literature, a comprehensive analytical treatment and rigorous understanding of the precise low-frequency limits remain largely unexplored.
+Despite these advances, WFS inherently possesses limitations, particularly at the lower end of its operational frequency range. 
+The integral representations used—specifically the Kirchhoff approximation—are fundamentally high-frequency approximations. 
+Consequently, low-frequency performance deteriorates below a geometry-dependent threshold \cite{Spors10ahrens:analysis}. Although this phenomenon is acknowledged within the literature, a comprehensive analytical treatment and rigorous understanding of the precise low-frequency limits remain largely unexplored.
 
-This paper, as the second part of a two-part series, specifically addresses these gaps by rigorously examining the low-frequency behavior and limits inherent to WFS. We analyze how the intrinsic approximations influence low-frequency wavefront reproduction and derive explicit criteria and characterizations for assessing low-frequency performance. Moreover, we extend our discussion to focused sources, a case exhibiting pronounced low-frequency artifacts due to truncation and tapering effects, areas previously under-examined in existing literature.
+This paper, as the second part of of the series exploring limitations of WFS, specifically addresses these gaps by rigorously examining the low-frequency behavior and limits inherent to WFS. 
+We analyze how the intrinsic approximations influence low-frequency wavefront reproduction and derive explicit criteria and characterizations for assessing low-frequency performance. 
+Moreover, we extend our discussion to focused sources, a case exhibiting pronounced low-frequency artifacts due to truncation and tapering effects, areas previously under-examined in existing literature.
+
+% === “Paper structured as follows” paragraph (insert at end of Introduction) ===
+The remainder of the paper is organized as follows. Section~II revisits the theoretical bases: the problem formulation, the 3D Kirchhoff approximation, the stationary phase approximation (SPA), the derivation of the 2.5D Kirchhoff approximation, and the resulting 2.5D WFS driving functions. 
+Section~III develops the low-frequency limits: a qualitative near–far field analysis, the connection to Fresnel-zone theory, and a general validity condition culminating in the closed-form cutoff expression (Eq.~\eqref{eq:low_freq_limit}). 
+Section~IV presents application studies: cutoff estimates for linear and circular SSDs with plane, point, and focused sources; spatial maps versus receiver and source position; and the effects of tapering and referencing. 
+Finally, Section~V concludes with design guidelines and implications.
 
 Following the principles of reproducible research, the MATLAB code for the figures in this article is publicly accessible at \href{https://github.com/gfirtha/ieee2025b_firtha/tree/gfirtha/MATLAB}{\uline{\small{https://github.com/gfirtha/ieee2025b\_firtha/tree/gfirtha/MATLAB}}}.
+Moreover, an open-source toolbox is available at \href{https://github.com/gfirtha/binauralizer}{\uline{\small{https://github.com/gfirtha/binauralizer}}} for real-time binauralization of virtual WFS systems with adjustable source and receiver position/orientation, enabling listening tests of the present results, highlighting the lower cutoff frequency, effects of tapering, and supporting alternative WFS referencing schemes.
+
 
 \section{Theoretical basics}
 
@@ -131,7 +151,7 @@ The associated geometry is depicted in Figure \ref{Fig:geometry}.
 	\put(24,35){$\vx$}
 	\put(3,19){synthesis plane}
 	\put(40,22){$C$: SSD contour}
-	\put(8,50){$S$: integral surface}
+	\put(8,50){$\Omega$: integral surface}
 	\put(80.5,71){reference curve}
 	\put(80.5,61.5){active SSD}
 	\put(56,34){$\vhk^P(\vxo)$}
@@ -160,7 +180,7 @@ For a closed surface $\Omega$ that encloses this region one has \cite{colton1983
 The term $P_{\mathrm{scat}}$ is the \emph{exterior} pressure field produced when an acoustically soft surface is placed on~$\Omega$ and excited by $P$; see \cite{Fazi2013:Equivalent_scattering}.  
 The jump in the pressure gradient $\mu(\mathbf{x}_{0},\omega)$ constitutes the driving signal for the secondary sources.
 
-In the context of WFS the surface of integration is chosen to be $\Omega$ is translationally invariant in the vertical direction; its intersection with the horizontal plane is the actual SSD contour (Fig.~\ref{Fig:geometry}). 
+In the context of WFS the surface of integration $\Omega$ is chosen to betranslationally invariant in the vertical direction; its intersection with the horizontal plane is the actual SSD contour (Fig.~\ref{Fig:geometry}). 
 The integration surface is illustrated in Fig.~\ref{Fig:geometry}.
 %In the kernel of the integral $P_{\mathrm{scat}}(\vxo, \omega)$ is an exterior field, scattered from a sound soft surface along $\Omega$, on which the scattered pressure is given by $P(\vxo, \omega), \vxo \in \Omega$ \cite{Fazi2013:Equivalent_scattering}. 
 %In the integral $\mu(\vxo)$ represents the pressure gradient jump between the interior and exterior sound fields, yielding driving functions for the general synthesis problem.
@@ -168,7 +188,7 @@ The integration surface is illustrated in Fig.~\ref{Fig:geometry}.
 Unfortunately, except for canonical geometries (plane, sphere, cylinder, …) $P'_{\mathrm{scat,n}}$ is not available in closed form, and numerical Boundary Element Method is required—clearly unsuitable for real-time reproduction.
 %The practical applicability of the above formulation is, therefore, limited in the context of sound field reproduction.
 
-Assuming that the integral/scatterer surface can be considered locally planar within the scale of the wavelength the scattered field can by approximated by $P'_{\mathrm{scat,n}}(\vxo, \omega) \approx -P'_{\mathrm{n}}(\vxo, \omega)$, yielding the Kirchoff approximation (KA) or tangent plane approximation of the interior sound field \cite{Pierce1991, Ogilvy1991, FelsenMarcuvitz1994, Chew1995}
+Assuming that the integral/scatterer surface can be considered locally planar within the scale of the wavelength the scattered field can be approximated by $P'_{\mathrm{scat,n}}(\vxo, \omega) \approx -P'_{\mathrm{n}}(\vxo, \omega)$, yielding the Kirchhoff approximation (KA) or tangent plane approximation of the interior sound field \cite{Pierce1991, Ogilvy1991, FelsenMarcuvitz1994, Chew1995}
 {\fontsize{9pt}{\baselineskip}
 \selectfont
 \begin{equation}
@@ -196,7 +216,7 @@ Sufficient validity conditions, normally derived for plane-wave scattering from 
       2 k \hkn^{P}(\vxo) \overline{\rho}_{\Omega}(\vxo) \gg 1, \text{or} \hspace{5mm} 2 k \hkn^{P}(\vxo)^3 \overline{\rho}_{\mathrm{\Omega}}(\vxo) \gg 1
   \end{equation}
 with $\overline{\rho}_{\Omega}$ being the mean local radius of the integral surface.
-In the present treatise, however, we are interested about its validity for smooth integral surfaces, but with both the sound source and receiver positions typically located in the proximity of the SSD.
+In the present treatise, however, we are interested in its validity for smooth integral surfaces, but with both the sound source and receiver positions typically located in the proximity of the SSD.
 In this scenario it will be shown that the low frequency limit of applicability is mainly dominated by the size of the integral surface (SSD) and the structure of the integral's amplitude distribution ($\mu(\vxo)$).
 
 From the integral formulation \eqref{eq:KA} the 3D WFS driving functions could be directly extraced, allowing the synthesis of the target field applying an enclosing SSD surface.
@@ -211,7 +231,7 @@ Consider a Fourier-type contour integral in the form
 \end{equation}
 being a generalization of the boundary integrals given by the Kirchhoff approximation, or the synthesized field.
 The integral can be evaluated around \emph{critical points} in the integral path: around discontinuities, interpreted as the source of unintended diffractional waves and around stationary positions describing the intended field in a ray acoustic manner \cite{Firtha2025_ieee_a}.
-In the present contribution we are interested only this latter contribution, with the asymptotic evaluation termed as the stationary phase approximation (SPA)
+In the present contribution we are interested only in this latter contribution, with the asymptotic evaluation termed as the stationary phase approximation (SPA)
 
 The SPA relies on the idea that under high frequency conditions rapid oscillations may cancel out and the integral is dominated by stationary positions in the integral path where the phase does not change.
 Mathematically, the stationary positions are found where the phase gradient vanishes.
@@ -226,7 +246,7 @@ holds.
 
 The derivation of the SPA relies on the Taylor's expansion of both the phase and the amplitude function, performing analytical Gaussian integration termwise and collecting same powers of $k$ together to rewrite the original integral as a power series of $k$ in the form
 \begin{equation}
-  I(k) = \sum_{i = 0}^{\infty} \frac{I_i(k)}{  \left(\ti k |\Phi^{''}(s^*)|\right)^{i}}
+  I(k) = \sum_{i = 0}^{\infty} \frac{I_i(k)}{  \left(\ti k |\Phi^{''}(s^*)|\right)^{i}}.
   \label{eq:SPA_series}
 \end{equation}
 The leading order (geometrical-optics) term is referred to as the stationary phase approximation of the integral, given by 
@@ -261,11 +281,11 @@ with $\sim$ denoting equality at $k \rightarrow \infty$.
 
 \subsection{The 2.5D Kirchhoff-approximation}
 The geometry for the Kirchhoff approximation (Eq.~\ref{eq:KA}) is shown in \ref{Fig:geometry}, with the window function \eqref{eq:win} denoted by pale red surface.
-Due to the vertical invariancy the integral can be split to a vertical and a horizontal integral ($\int_\Omega ... \td S(\vxo) = \int_{C} \int_{-\infty}^{\infty} ... \td z_0 \td s(x_0,y_0)$).
+Due to the vertical invariance the integral can be split to a vertical and a horizontal integral ($\int_\Omega ... \td S(\vxo) = \int_{C} \int_{-\infty}^{\infty} ... \td z_0 \td s(x_0,y_0)$).
 In WFS theory the SPA is first applied to the Kirchhoff approximation along the vertical dimension in order to reduce the surface integral to a contour integral along the physically realizable SSD contour.
 
 The stationary position for the surface integral is found where the gradient of the integrand's phase function vanishes, i.e. where $\vhk^P(\vxo^*) = \vhk^G(\vx-\vxo^*)$ holds (the local propagation direction of the Green's function is aligned with that of the virtual field along the SSD).
-Thererfore, for virtual fields located in the the synthesis plane with $\hat{k}^P_z = 0$ the vertical stationary position is identically found at $z^* = 0$ as it is illustrated in Figure \ref{Fig:geometry}.
+Therefore, for virtual fields located in the the synthesis plane with $\hat{k}^P_z = 0$ the vertical stationary position is identically found at $z^* = 0$ as it is illustrated in Figure \ref{Fig:geometry}.
 
 The required vertical second phase derivative is given by $\phi^{P+G''}_{zz}  =  -\left( \frac{1}{\rho^G(\vx-\vxo)} + \frac{1}{\rho^P_v(\vxo)} \right)$, with $\rho^P_v$ and $\rho^G$ being the vertical radii of the target field and the Green's function (the latter given identically by $\rho^G(\vx-\vxo) = |\vx-\vxo|$).
 The above quantity frequently emerges in the following, therefore, for the sake of brevity we define the \emph{vertical/horizontal amplitude correction factor} as
@@ -274,7 +294,7 @@ The above quantity frequently emerges in the following, therefore, for the sake 
     = \frac{\rho^{P}_{v/h}(\vxo) \rho^{G}(\vx- \vxo)}{\rho^{P}_{v/h}(\vxo) + \rho^{G}(\vx- \vxo)}.
 \end{equation}
 
-Approximating \eqref{eq:KA} by the leading order SPA given by Eq.~\eqref{eq:SPA0} results in the contour integral
+Evaluating \eqref{eq:KA} vertically by the leading order SPA given by Eq.~\eqref{eq:SPA0} results in the contour integral
 {\fontsize{8pt}{\baselineskip}
 \selectfont
 \begin{multline}
@@ -284,17 +304,17 @@ Approximating \eqref{eq:KA} by the leading order SPA given by Eq.~\eqref{eq:SPA0
   \label{eq:25D_KA}
 \end{multline}}
 referred to as the 2.5D Kirchhoff approximation.
-Finally, the local plane wave approximation for the target field's gradient given by Eq.~\ref{eq:pw_appr}, a choice justified in the following section, resulting in the final form
+Finally, the local plane wave approximation for the target field's gradient given by Eq.~\ref{eq:pw_appr}, a choice justified in the following section, results in the final form
 {\fontsize{9pt}{\baselineskip}
 \selectfont
 \begin{multline}
-  P(\vx,\omega)  \oint_C  w(\vxo)  \hkn^P(\vxo) \, \sqrt{8\pi \ti k} \, \sqrt{d^{\mathrm{c}}_{v}(\vx,\vxo)}\cdot
+  P(\vx,\omega) = \oint_C  w(\vxo)  \hkn^P(\vxo) \, \sqrt{8\pi \ti k} \, \sqrt{d^{\mathrm{c}}_{v}(\vx,\vxo)}\cdot
   \\ P(\vxo, \omega)  G(\vx-\vxo,\omega)\, \td s(\vxo).
-  \label{eq:25D_KA}
+  \label{eq:25D_KA_gradient}
 \end{multline}}
 
 The above 2.5D integral formulation can be further evaluated asymptotically with decomposing it to an intended component and additional diffractional waves due to the finite horizontal integral path.
-The intended field can be estimated by the horizontal SPA around the integral's stationary points $\vxo^*(\vx)$ that has to be found for each evaluation position $\vx$ (For the sake of brevity this dependency is not denoted in the following), resulting in
+The intended field can be estimated by the horizontal SPA of \eqref{eq:25D_KA_gradient} around the integral's stationary points $\vxo^*(\vx)$ that has to be found for each evaluation position $\vx$ (For the sake of brevity this dependency is not denoted in the following), resulting in
 {\fontsize{8pt}{\baselineskip}
 \selectfont
 \begin{multline}
@@ -303,16 +323,16 @@ The intended field can be estimated by the horizontal SPA around the integral's 
     P(\vxo^*, \omega) G(\vx-\vxo^*).
    \label{eq:25D_KA_amp_dist} 
 \end{multline}}
-The above formulation can be shown to coincide the target field under the validity of the SPA \cite{Firtha2025_ieee_a}.
+The above formulation can be shown to coincide with the target field under the validity of the SPA \cite{Firtha2025_ieee_a}.
 This fact already shows that the validity of the 2.5D Kirchhoff approximation and the SPA are strongly interconnected: as long the SPA holds the KA inherently holds (asides from the undesired diffractional waves).
 
-Furthermore, from \eqref{eq:WFS_amp_dist} the role of the amplitude correction factor is apparent:
+Furthermore, from \eqref{eq:25D_KA_amp_dist} the role of the amplitude correction factor is apparent:
 In the frequency range where ray theory and the SPA holds, the amplitude distribution of the acoustic field is governed by the geometric spreading of energy, which is inherently defined by the phase function of the field, encoded in the wavefront curvature (as it is reflected by Eq.~(4) \cite{Firtha2025_ieee_a}).
 Once the amplitude of the field is known at the stationary position and 3D propagation is assumed the amplitude is matched to the intended by the amplitude correction factor.
 
 \subsection{The 2.5D WFS driving functions}
-The 2.5D WFS driving function for an arbitrary SSD contour can be extracted from the 2.5D KA \eqref{eq:25D_KA} by making the kernel of the integral independent of the receiver position $\vx$, apparent in $d^{\mathrm{c}}_{h}\left(\vx,\vxo^*\right)$.
-This is achieved by realizing that under the validity of the above mentioned further, horizontal SPA each SSD element at $\vxo$ dominates the synthesized field at those receiver positions for which the SSD element serves as a horizontal stationary position. 
+The 2.5D WFS driving function for an arbitrary SSD contour can be extracted from the 2.5D KA \eqref{eq:25D_KA}/\eqref{eq:25D_KA_gradient} by making the kernel of the integral independent of the receiver position $\vx$, apparent in $d^{\mathrm{c}}_{h}\left(\vx,\vxo^*\right)$.
+This is achieved by realizing that under the validity of a further horizontal SPA each SSD element at $\vxo$ dominates the synthesized field at those receiver positions for which the SSD element serves as a horizontal stationary position. 
 This allows one to assign a unique reference position to each SSD position denoted by $\vxref(\vxo)$ as shown in Fig.~\ref{Fig:geometry} (hence dependencies $\vx(\vxo^*)$ interchanged to $\vxo(\vxref)$).
 The set of all reference positions define the reference curve along which amplitude correct synthesis can be achieved. 
 With these considerations the 2.5D WFS driving functions are given as 
@@ -320,7 +340,7 @@ With these considerations the 2.5D WFS driving functions are given as
 \selectfont
 \begin{multline}
   D(\vxo,\omega) = w(\vxo) \, \sqrt{\frac{8\pi} {\ti k}} \,  \sqrt{d^{\mathrm{c}}_{v}\left(\vxref(\vxo),\vxo\right)} \,  P'_{\mathrm{n}}(\vxo, \omega) \approx\\
-  \approx w(\vxo)  \, \sqrt{8\pi \ti k} \, \sqrt{ d^{\mathrm{c}}_{v}\left(\vxref(\vxo),\vxo\right) } \,  \hkn^P(\vxo)\, P(\vxo, \omega).
+  \approx w(\vxo)  \, \sqrt{8\pi \ti k} \, \sqrt{ d^{\mathrm{c}}_{v}\left(\vxref(\vxo),\vxo\right) } \,  \hkn^P(\vxo)\, P(\vxo, \omega),
   \label{eq:25D_WFS}
 \end{multline}}
 and similarly to \eqref{eq:25D_KA_amp_dist} the intended component of the synthesized field is given as
@@ -338,7 +358,7 @@ and similarly to \eqref{eq:25D_KA_amp_dist} the intended component of the synthe
    \label{eq:WFS_amp_dist} 
 \end{multline}}
 The above formulation trivially matches the target field at $\vx = \vxref$.
-Again, it is emphasized the dependency $\vxo^*(\vx)$ is suppressed, but in order to evaluate the above formulation for a given receiver position the stationary SSD element has to be found a-priori as shown in Fig.~\ref{Fig:geometry}.
+Again, it is emphasized that the dependency $\vxo^*(\vx)$ is suppressed, but in order to evaluate the above formulation for a given receiver position the stationary SSD element has to be found a-priori as shown in Fig.~\ref{Fig:geometry}.
 
 \section{Low frequency limits of WFS}
 
@@ -367,7 +387,7 @@ Again, it is emphasized the dependency $\vxo^*(\vx)$ is suppressed, but in order
   \end{minipage}
 \end{minipage}
 
-  \caption{Evaluation of a point source's field by the 2.5D appoximation at $f_0 = 1~\mathrm{kHz}$ (a), and the measured normalized frequency response at the origin by applying the 3D (b) and the 2.5D Kirchhoff approximation.
+  \caption{Evaluation of a point source's field by the 2.5D approximation at $f_0 = 1~\mathrm{kHz}$ (a), and the measured normalized frequency response at the origin by applying the 3D (b) and the 2.5D Kirchhoff approximation.
   On Figure (a) white filled area denotes the amplitude distribution of the 2.5D integrand.}
   \label{fig:Kirchhoff_appr}
 \end{figure}
@@ -375,25 +395,25 @@ Again, it is emphasized the dependency $\vxo^*(\vx)$ is suppressed, but in order
 The main goal of the present contribution is to define a lower cutoff frequency above which WFS theory holds.
 The previous section already highlighted that in the geometry under discussion---i.e.~for sources and receivers located typically in the SSD's proximity ---this frequency coincides with the validity of the stationary phase approximation.
 
-The validty of the stationary phase approximation is a complex problem that would require the careful investigation of the phase and amplitude relations of the entire integral path~\cite{chassande-mottin_flandrin_1999, 721375}.
-A local approximation on the low frequency limit can be given by investigating the KA's integrand's amplitude and phase changes around the stationary position, as discussed in~\cite{firtha_hahn_schultz_fiala_2025} and briefly outlined in the appendix~\ref{app:local_SPA}.
-This local approach, however, does not take the finite size of the SSD into account, which is shown to dominate in the aspect of WFS.
+The validity of the SPA is a complex problem that would require the careful investigation of the phase and amplitude along the entire integral path~\cite{chassande-mottin_flandrin_1999, 721375}.
+A local approximation on the low frequency limit can be given by inspecting the KA's integrand's amplitude and phase changes around the stationary position, as discussed in~\cite{firtha_hahn_schultz_fiala_2025} and briefly outlined in the appendix~\ref{app:local_SPA}.
+However, that local approach ignores the finite SSD size, which dominates in WFS.
 
 In the following a physically motivated approach is introduced, which takes into account finite size SSDs, however, does not investigate the relative rate of amplitude and phase changes in the integration path.
 Therefore, the following approach is mainly applicable for smooth, enclosing SSDs, being a realistic requirement for WFS applications.
-It should be noted that the following discussion both hold in the context of WFS and more generally for the 2.5D Kirchhoff approximation, therefore, they are discussed adjointly.
+It should be noted that the following discussion both holds in the context of WFS and more generally for the 2.5D Kirchhoff approximation, therefore, they are discussed adjointly.
 
 \subsection{Qualitative analysis}
 For a qualitative analysis of the underlying principles, first the example of the 3D and 2.5D WFS is investigated, reproducing a point source inside a circular area, as illustrated in Fig.~\ref{fig:Kirchhoff_appr}.
 Fig.~(a) illustrates the synthesized pressure and the approximate solution of the equivalent scattering problem in the exterior domain.
 Figures (b) and (c) depict the measured frequency response at the center of the circular SSD.
 In order to investigate the structure of the synthesized field the gradient decomposition of the the target field given by Eq.~\eqref{eq:gradient} is applied to both the 3D and 2.5D WFS integrals allowing to partition them into a nearfield and farfield contribution.
-Written for the 2.5D case this yiels 
+Written for the 2.5D case this yields 
 {\fontsize{8pt}{\baselineskip}
 \selectfont
 \begin{multline}
   \Psynth(\vx,\omega)  = \oint_C w(\vxo) \, \sqrt{\frac{8\pi} {\ti k}} \, \sqrt{ d^{\mathrm{c}}_{v}\left(\vxref(\vxo),\vxo\right)} \left( \overline{\kappa}^P(\vxo) + \ti k\right) \cdot \\ \cdot 
-  \, P(\vxo, \omega) G(\vx-\vxo,\omega) \td s(\vxo) 
+  \hkn^P(\vxo) P(\vxo, \omega) G(\vx-\vxo,\omega) \td s(\vxo) 
   = I_{\mathrm{near}}(\vx,\omega) + I_{\mathrm{far}}(\vx,\omega) 
 \end{multline}}
 with
@@ -407,7 +427,7 @@ with
 {\fontsize{9pt}{\baselineskip}
 \selectfont
 \begin{multline}
-  I_{\mathrm{far}}(\vx,\omega)  =  \sqrt{8\pi \ti k} \oint_C  w(\vxo)  \hkn^P(\vxo)  \,d^{\mathrm{c}}_{v}\left(\vxref(\vxo),\vxo\right) \cdot
+  I_{\mathrm{far}}(\vx,\omega)  =  \sqrt{8\pi \ti k} \oint_C  w(\vxo)  \hkn^P(\vxo)  \,\sqrt{d^{\mathrm{c}}_{v}\left(\vxref(\vxo),\vxo\right) }\cdot
   \\ P(\vxo, \omega)  G(\vx-\vxo,\omega)\, \td s(\vxo).
   \label{eq:Ifar}
 \end{multline}}
@@ -415,18 +435,18 @@ and a similar decomposition can be written for the 3D case.
 In Fig.~\ref{fig:Kirchhoff_appr} (b) and (c) all the results are normalized by the target field's nominal amplitude at the measurement position.
 
 The amplitude distribution of the integrand in \eqref{eq:Ifar} is illustrated in Fig.~\ref{fig:Kirchhoff_appr} (a) over the SSD with white area.
-It is important to realize that even in case of an infinite planar/linear integration path the amplitude distribution decays rapidly towards the lateral integration positions, therefore, the amplitude distribution acts as a windowing function with an effective length defined in the following section.% \footnote{Similar effective aperture sizes can be defined for the 3D case as well. For the 3D case, however, the problem is more complex as in the present separable geometry a vertical and horizontal effective length can be defined and the behaviour of the integrals change at two cutoff frequencies, depending on these lengthes. 
+It is important to realize that even in case of an infinite planar/linear integration path the amplitude distribution decays rapidly towards the lateral integration positions, therefore, the amplitude distribution acts as a windowing function with an effective length defined in the following section.% \footnote{Similar effective aperture sizes can be defined for the 3D case as well. For the 3D case, however, the problem is more complex as in the present separable geometry a vertical and horizontal effective length can be defined and the behaviour of the integrals change at two cutoff frequencies, depending on these lengths. 
 %This aspect is, however, out of the scope of the present discussion.}.
 The contribution of $I_{\mathrm{near}}$ and $I_{\mathrm{far}}$ depend on how the phase function $\phi^P(\vxo) + \phi^G(\vx-\vxo)$ changes within this effective window length.
 \begin{itemize}
   \item For low frequencies the phase barely changes over the effective window length, therefore, the integrand is approximately constant in phase over the SSD.
   As a result, for the 3D case the nearfield contribution is constant, while the farfield contribution exhibits a frequency response of $~\sim \ti k$.
   The constant nearfield contribution also shows a level decrease which is the error of the Kirchhoff approximation, highlighting that the KA is inherently unable to predict the target field's evanescent contribution/reactive near field.
-  Obivously, this error vanishes in case of a planar integration path.
+  Obviously, this error vanishes in case of a planar integration path.
   \item For high frequencies the phase changes significantly within the effective window length. 
   As the SPA starts to hold rapid oscillations cancel out and the nearfield contribution decreases with $~\sim \ti k$ while the farfield contribution is constant.
   \item In case of the 2.5D WFS the SPA introduces a frequency correction factor of $~\sim \sqrt{1/\ti k}$.
-  For low frequencies, where the SPA does not hold this results in an erroneous low frequency boost for the near field given by $~\sim \sqrt{1 /\ti k}$, and results in an overall frequency response of $~\sim \sqrt{\ti k}$ for the farfield component.
+  For low frequencies, where the SPA does not hold this results in an erroneous low frequency boost for the near field given by $~\sim \sqrt{1 /\ti k}$, and in an overall frequency response of $~\sim \sqrt{\ti k}$ for the farfield component.
   On the other hand when the SPA requirements is fulfilled $I_{\mathrm{far}}(\vx,\omega)$ exhibits the correct flat frequency response.
   This observation justifies the application of the high frequency gradient approximation in the 2.5D KA and 2.5D WFS theory.
 \end{itemize}
@@ -434,20 +454,20 @@ From the above discussion it is clear that our aim is to find the amount of phas
 
 \subsection{Relation of the SPA validity and Fresnel zone theory}
 
-As a most simple approach the cutoff frequency can be directly estimated from the graph of the synthesized field's frequency response, as shown in Fig.~\ref{fig:Kirchhoff_appr} (b), restricting our investigation to the farfield component $I_{\mathrm{far}}$.
+As the most simple approach the cutoff frequency can be directly estimated from the graph of the synthesized field's frequency response, as shown in Fig.~\ref{fig:Kirchhoff_appr} (b), restricting our investigation to the farfield component $I_{\mathrm{far}}$.
 From herein let's denote the amplitude of the integrand in \eqref{eq:Ifar}, including the amplitude of the driving function and the SSD to receiver Green's function by 
-{\fontsize{9pt}{\baselineskip}
+{\fontsize{8pt}{\baselineskip}
 \selectfont
 \begin{multline}
  A^{D\cdot P}(\vx,\vxo) = \\
  \underbrace{w(\vxo)  \hkn^P(\vxo) \, \sqrt{8\pi} \, \sqrt{d^{\mathrm{c}}_{v}\left(\vxref(\vxo),\vxo\right)} \, A^P(\vxo)}_{A^{D}(\vxo)}  A^G(\vx-\vxo).
 \end{multline}}
-It is known, that below the unknown cutoff wavenumber $k_{c}$ the slope of the synthesized field decreases by 10 dB/decade, i.e. with $\sim \sqrt{k}$.
+It is known, that below the unknown cutoff wavenumber $k_{c}$ the slope of the synthesized field decreases by 10 dB/decade ($\sim \sqrt{k}$).
 The endpoint of the slope at $k = 0$ is given by 
 \begin{equation} 
 I_{\mathrm{far}}(\vx, 0) = \oint_C A^{D\cdot P}(\vx,\vxo) \, \td s(\vxo).
 \end{equation} 
-On the other hand applying piecewise linear approximation to the Bode plot the synthesized field reaches it's target level at $\omega_c = c \cdot k_c$, with the ideal amplitude given analytically by Eq.~\eqref{eq:WFS_amp_dist}, therefore,
+On the other hand applying piecewise linear approximation to the Bode plot the right endpoint of the slope (which it reaches at $\omega_c = c \cdot k_c$) is the nominal magnitude of the synthesized field given analytically by Eq.~\eqref{eq:WFS_amp_dist}, therefore,
 \begin{multline} 
 I_{\mathrm{far}}(\vx, \omega_{c}) = 4\pi w(\vxo^*) \, \sqrt{d^{\mathrm{c}}_{v}\left(\vxref(\vxo^*),\vxo^*\right)} \sqrt{d^{\mathrm{c}}_{h}\left(\vx,\vxo^*\right)} \cdot \\ \cdot 
     A^P(\vxo^*) A^G(\vx-\vxo^*)
@@ -467,7 +487,7 @@ In order to arrive at a more general, physically motivated result it is investig
 
 \begin{figure} 
   \begin{center}
-    \begin{overpic}[width = 0.7\columnwidth  ]{figs/effective_window_simple_geom.png}
+    \begin{overpic}[width = 0.6\columnwidth  ]{figs/effective_window_simple_geom.png}
     \footnotesize
     \put(80.5,39){$\vxo^*(\vx)$}
     \put(38,39){$\vxref(\vxo^*)$}
@@ -479,7 +499,7 @@ In order to arrive at a more general, physically motivated result it is investig
 	\end{overpic}
 \end{center}
 \caption{Symmetrical geometry for estimating the phase increment towards the SSD endpoints at the cutoff frequency in case of an incident plane wave with the wave vector $\vk^{\mathrm{PW}}$.
-The ampltidue distribution $A^{D\cdot P}(\vx,\vxo)$ is denoted by white filled area, while the symmetrical equivalent window is denoted by red fill.}
+The amplitude distribution $A^{D\cdot P}(\vx,\vxo)$ is denoted by white filled area, while the symmetrical equivalent window is denoted by red fill.}
 	\label{Fig:Leff_simplified_geometry}
 \end{figure}
 
@@ -492,7 +512,7 @@ With these assumptions the endpoint of the slope at $k = 0$ is approximated as
 \begin{multline} 
 I_{\mathrm{far}}(\vx, 0) \approx \sqrt{8\pi}  
 \sqrt{d^{\mathrm{c}}_{v}\left(\vxref(\vxo^*),\vxo^*\right)}
-  \\ A^P(\vxo^*)\,  A^G(\vx-\vxo^*) \,\underbrace{\oint_C  w(\vxo) \,  \hkn^P(\vxo^*) \td s(\vxo)}_{2\Leff}.
+  \\ A^P(\vxo^*)\,  A^G(\vx-\vxo^*) \,\underbrace{\oint_C  w(\vxo) \,  \hkn^P(\vxo) \td s(\vxo)}_{2\Leff}.
   \label{eq:Ifar_appr}
 \end{multline} 
 with $\Leff$ being an equivalent, effective window length.
@@ -529,7 +549,7 @@ In Appendix \ref{app:phase_increment} the phase increment from the stationary po
  \Delta \phi^{P+G}(\Delta s) =
 - \frac{ \Delta s ^2}{2} \frac{\hkn^P(\vxo^*)^2}{d^{\mathrm{c}}_{h}\left(\vx,\vxo^*\right) }.
 \end{equation}}
-This allows one to express the total phase change up to the end of the equivalent window  $\Delta s = \Leff $ on the cutoff wavenumber $k_c$, which in the present frontal case ($\hkn^P(\vxo^*)=1$) given by
+This allows one to express the total phase change up to the end of the equivalent window  $\Delta s = \Leff $ on the cutoff wavenumber $k_c$, which in the present frontal case ($\hkn^P(\vxo^*)=1$) is given by
 {\fontsize{8pt}{\baselineskip}
 \selectfont
 \begin{equation} 
@@ -537,7 +557,7 @@ This allows one to express the total phase change up to the end of the equivalen
 \end{equation}}
 This result is fundemantel in the aspect of the present treatise: it states that in frontal directions the SPA starts to hold when the phase increment from the center of the array exceeds $\pi/4$ towards the end of the effective endpoint of the SSD, or with other word the entire effective window length contains at least a half wavelength.
 
-The result is in perfect agreement with the theory of Fresnel zones and Fresnel numbers: Eq.~\eqref{eq:omega_c_appr} can be reaaranged to
+The result is in perfect agreement with the theory of Fresnel zones and Fresnel numbers: Eq.~\eqref{eq:omega_c_appr} can be rearranged to
  {\fontsize{10pt}{\baselineskip}
 \selectfont
 \begin{equation} 
@@ -563,6 +583,8 @@ In the following we generalize the previous results in order to give low frequen
     \put(48,11.5){$\vxo^*(\vx)$}
     \put(25,27){$\vxref(\vxo^*)$}
     \put(28,39){$\vx$}
+    \put(44,4){$\vx_1$}
+    \put(81,17){$\vx_2$}
     \put(52,3.5){\rotatebox{20}{ \textcolor[RGB]{162,50,52}{$\hat{L}_{\mathrm{eff},1}$}}  }
     \put(67,9){\rotatebox{21}{ \textcolor[RGB]{162,50,52}{$\hat{L}_{\mathrm{eff},2}$}}  }
     \scriptsize \put(60,18){\rotatebox{15}{ \textcolor[RGB]{107,107,107}{ $A^{D\cdot P}(s)$} } }  
@@ -575,7 +597,7 @@ In the following we generalize the previous results in order to give low frequen
 	\end{overpic}
 \end{center}
 \caption{Arbitrary geometry for estimating the low frequency cutoff for 2.5D WFS.
-The ampltidue distribution $A^{D\cdot P}(\vx,\vxo)$ is denoted by white filled area, while the symmetrical equivalent window is denoted by red fill.
+The amplitude distribution $A^{D\cdot P}(\vx,\vxo)$ is denoted by white filled area, while the symmetrical equivalent window is denoted by red fill.
 $\mathfrak{I}$ denotes the illuminated region, $\mathfrak{S}_i$ the shadow and $\mathfrak{T}_i$ the tapering regions \cite{Firtha2025_ieee_a}.}
 	\label{Fig:Leff_geometry}
 \end{figure}
@@ -583,21 +605,21 @@ $\mathfrak{I}$ denotes the illuminated region, $\mathfrak{S}_i$ the shadow and $
 The role of the effective window length has already emerged naturally in \eqref{eq:Ifar_appr}, taking only in consideration amplitude variations due to tapering and changes in the local wavenumber vector.
 Naturally, the amplitude variations due to the target field's amplitude and the Green's function also act as a windowing function, decaying towards the SSD endpoints.
 Furthermore, non-central stationary positions should be taken into consideration in order to account for arbitrary SSD shapes and lateral receiver positions.
-As a further generalization let's define the effective window length measured from the stationary position towards both end of the SSD.
-The effective lengthes are calculated from the amplitude distribution of the integrand, normalized by its stationary value, given by
+As a further generalization let's define the effective window length measured from the stationary position towards both end of the SSD denoted by $\vx_{1/2}$ in Fig.~\ref{Fig:Leff_geometry}.
+The effective lengths are calculated from the amplitude distribution of the integrand, normalized by its stationary value, given by
  {\fontsize{10pt}{\baselineskip}
 \selectfont
 \begin{equation}
-\hat{L}_{\mathrm{eff},1/2}(\vx) = \int_{\vxo^*(\vx)}^{\vx_{1/2}} \frac{  A^{D\cdot P}(\vx,\vxo) }{A^{D\cdot P}(\vx,\vxo^*(\vx))} \td s(\vxo),
+\hat{L}_{\mathrm{eff},1/2}(\vx) = \int_{\vxo^*(\vx)}^{\vx_{1/2}} \frac{  A^{D\cdot P}(\vx,\vxo) }{A^{D\cdot P}(\vx,\vxo^*(\vx))} \td s(\vxo).
 \label{eq:Leff}
 \end{equation}}
-where $A^{D\cdot P}$ is the amplitude of the integrand describing the synthesized field, i.e. the product of the driving function's and the Green's function's amplitude
- {\fontsize{8pt}{\baselineskip}
-\selectfont 
-\begin{equation}
-A^{D\cdot P}(\vx,\vxo) = w(\vxo)  \hkn^P(\vxo) \,\sqrt{d^{\mathrm{c}}_{v}\left(\vxref(\vxo),\vxo\right)}  A^P(\vxo)  A^G(\vx-\vxo).
-\end{equation}}
-In order the SPA to hold we may require that the integrand's phase should exceed $\pi / 4$ in both effective window lengthes, i.e. two critical wavenumbers are given by 
+%where $A^{D\cdot P}$ is the amplitude of the integrand describing the synthesized field, i.e. the product of the driving function's and the Green's function's amplitude
+% {\fontsize{8pt}{\baselineskip}
+%\selectfont 
+%\begin{equation}
+%A^{D\cdot P}(\vx,\vxo) = w(\vxo)  \hkn^P(\vxo) \,\sqrt{d^{\mathrm{c}}_{v}\left(\vxref(\vxo),\vxo\right)}  A^P(\vxo)  A^G(\vx-\vxo).
+%\end{equation}}
+In order the SPA to hold we may require that the integrand's phase should exceed $\pi / 4$ in both effective window lengths, i.e. two critical wavenumbers are given by 
 \begin{equation}
   k_{c,1/2}(\vx) \cdot \, \Delta \phi(\hat{L}_{\mathrm{eff},1/2}(\vx)) = -\frac{\pi}{4}.
 \end{equation}
@@ -610,19 +632,19 @@ Finally, by using \eqref{eq:phase_inc} for the phase increment the critical wave
 \end{equation}
 and $f_{c, 1/2}(\vx) = \frac{k_c(\vx) \, c}{2 \pi}$, being the main result of the present contribution.
 The above cutoff frequency is obviously a generalization of \eqref{eq:omega_c_appr}, extended towards arbitrary integrand amplitude and lateral source/receiver positions.
-The expression states that the frequency band of synthesis is maximal for frontal positions $(\hat{k}_{\mathrm{n}}(\vxo^*)) = 1$, and for sources and receivers far from the SSD. 
+The expression states that the frequency band of synthesis is maximal for frontal positions ($\hat{k}_{\mathrm{n}}(\vxo^*) = 1$), and for sources and receivers far from the SSD. 
 However it may dramatically decrease once either the source or the receiver gets to the SSD proximity.
 Furthermore, the lower cutoff frequency scales inversely proportionally with the second power of the SSD's effective length.
-This effective length is dominated by the SSD's physical dimensions, but is also affected by the source and receiver positions (again, sources or receivers in the proximmity of the SSD significantly shorten the effective length) and can be significantly altered by applying tapering or unsuitable referencing scheme.
+This effective length is dominated by the SSD's physical dimensions, but is also affected by the source and receiver positions (again, sources or receivers in the proximity of the SSD significantly shorten the effective length) and can be altered by applying tapering or unsuitable referencing scheme.
 
-As a brief summary, on order to calculate the low frequency limit of 2.5D WFS in a practical scenario one has to define the stationary position for a given receiver position by simple geometric means.
+As a brief summary, in order to calculate the low frequency limit of 2.5D WFS in a practical scenario one has to define the stationary position for a given receiver position by simple geometric means.
 Having found the stationary position the equivalent/effective window length has to be calculated on both sides of the stationary point, requiring the numerical integration of the driving function (multiplied by the Green's function).
-From the effective window length the lower cutoff frequencies can be calculated analytically by \eqref{eq:low_freq_limit}, from which, obviously, the higher frequency limit gives the overall cutoff frequency (defined from the shorter window length).
+From the effective window length the lower cutoff frequencies can be calculated analytically by \eqref{eq:low_freq_limit}, from which $\max\{f_{c, 1},f_{c, 2} \}$ gives the overall cutoff frequency (defined from the shorter window length).
 
 \section{Application examples}
 
 \subsection{Cutoff frequency for simple WFS geometries}
-Next the application of the previous results is investigated in simple practical WFS scenarios: in case of the syntehsis of a point source and a plane wave by using linear and circular SSDs.
+Next the application of the previous results is investigated in simple practical WFS scenarios: in case of the synthesis of a point source and a plane wave by using linear and circular SSDs.
 
 \paragraph{Cutoff frequency for a virtual point source}
 For the case of a virtual   point source located at $\vxs = \posvec{3}{x_s}{y_s}{0}$ the principle radii and the local wavenumber vector specializes to $\rho^P_{\mathrm{v/h}}(\vx) = |\vx-\vxs|$, $\vk^P(\vx) = \frac{\vx-\vxs}{|\vx-\vxs|}$.
@@ -632,7 +654,7 @@ A^{D\cdot P}(\vx,\vxo) = w(\vxo) \, \sqrt{\frac{ |\vxref(\vxo)-\vxo| }{F\,|\vxre
  \\  \frac{\left<\vxo-\vxs \cdot \mathbf{n}(\vxo) \right>}{|\vxo-\vxs|^{3/2}}  \frac{1}{|\vx-\vxo|},
 \end{multline}
 where $F$ is a focused flag, accounting for the synthesis of focused point sources as described in \cite{Firtha2025_ieee_a}.
-Once the reference curve is defined the effective lengthes can be calculated from the above amoplitude distribution according to \eqref{eq:Leff}.
+Once the reference curve is defined the effective lengths can be calculated from the above amplitude distribution according to \eqref{eq:Leff}.
 In order to evaluate the low frequency limit at $\vx$ one has to find the corresponding stationary SSD element $\vxo^*(\vx)$, which is simply given by the intersection of the SSD and the line connecting the virtual source and the receiver position, as shown e.g. in Fig~\ref{Fig:Psynth_linear}.
 Finally, the low frequency limit can be calculated as
 \begin{equation}
@@ -645,18 +667,88 @@ Finally, the low frequency limit can be calculated as
 \end{equation}
 
 
-\begin{figure} 
-  \begin{center}
-    \begin{overpic}[width = 1\columnwidth]{figs/Psynth_linear_ps.png}
-            \scriptsize \put(0,10){(a)}
-            \scriptsize \put(58,0){(b)}
-	\end{overpic}
-\end{center}
-\caption{Synthesis of a point source by using a finite linear SSD segment with the total length of 3~m.
-Figure (a) depicts the synthesized field along with the investigation setup 
-Figure (b) shows the frequency response in the frontal ($\vx_{\mathrm{r}_1} = \posvec{2}{0}{1}~\mathrm{m}$) and an examplery lateral ($\vx_{\mathrm{r}_1} = \posvec{2}{1.5}{1}~\mathrm{m}$) receiver position, both chosen to lie on the reference line in the present example, with highlighting the estimated lower cutoff frequencies.}
-	\label{Fig:Psynth_linear}
+%\begin{figure} 
+%  \begin{center}
+%    \begin{overpic}[width = 1\columnwidth]{figs/Psynth_linear_ps.png}
+%            \scriptsize \put(0,10){(a)}
+%            \scriptsize \put(58,0){(b)}
+%	\end{overpic}
+%\begin{minipage}[width = 0.5\columwidth]
+%    \begin{overpic}[width = 1\columnwidth]{figs/Psynth_linear_ps_c.png}
+%     \scriptsize \put(0,10){(a)}
+%  	\end{overpic}
+%\end{minipage}
+%\begin{minipage}[width = 0.5\columwidth]
+%    \begin{overpic}[width = 1\columnwidth]{figs/Psynth_linear_ps_a.png}
+%     \scriptsize \put(0,10){(a)}
+%  	\end{overpic}
+%    \begin{overpic}[width = 1\columnwidth]{figs/Psynth_linear_ps_b.png}
+%     \scriptsize \put(0,10){(a)}
+%  	\end{overpic}
+%\end{minipage}
+%\end{center}
+%\caption{Synthesis of a point source by using a finite linear SSD segment with the total length of 3~m.
+%Figure (a) depicts the synthesized field along with the investigation setup 
+%Figure (b) shows the frequency response in the frontal ($\vx_{\mathrm{r}_1} = \posvec{2}{0}{1}~\mathrm{m}$) and an examplery lateral ($\vx_{\mathrm{r}_1} = \posvec{2}{1.5}{1}~\mathrm{m}$) receiver position, both chosen to lie on the reference line in the present example, with highlighting the estimated lower cutoff frequencies.}%%
+%	\label{Fig:Psynth_linear}
+%\end{figure}
+
+% preamble:
+% \usepackage{graphicx}
+% \usepackage[percent]{overpic}
+% Preamble:
+% \usepackage{graphicx}
+% \usepackage[percent]{overpic} % for \put coords in %
+% (no extra packages needed for \dimexpr)
+
+\begin{figure}
+  \centering
+  % One horizontal box that holds both columns
+  \makebox[\linewidth][c]{%
+    % Left column
+    \begin{minipage}[t]{\dimexpr.5\linewidth-.5\columnsep\relax}\vspace*{0pt}
+      \begin{overpic}[width=\linewidth]{figs/Psynth_linear_ps_a.png}
+        \scriptsize \put(0,10){(a)}
+      \end{overpic}
+
+      \vspace{0.75ex}
+
+      \begin{overpic}[width=\linewidth]{figs/Psynth_linear2_ps_a.png}
+        \scriptsize \put(0,10){(d)}
+      \end{overpic}
+    \end{minipage}%
+    \hspace{\columnsep}% exact column gap
+    % Right column
+    %
+    \begin{minipage}[t]{\dimexpr.5\linewidth-.5\columnsep\relax}\vspace*{0pt}
+      \vspace{1mm}
+      \begin{overpic}[width=\linewidth]{figs/Psynth_linear_ps_b.png}
+        \scriptsize \put(0,0){(b)}
+      \end{overpic}
+
+      \vspace{0.75ex}
+      \vspace{0mm}
+
+      \begin{overpic}[width=\linewidth]{figs/Psynth_linear_ps_c.png}
+        \scriptsize \put(0,0){(c)}
+      \end{overpic}
+
+      \vspace{0.75ex}
+
+      \vspace{2.5mm}
+      \begin{overpic}[width=\linewidth]{figs/Psynth_linear2_ps_b.png}
+        \scriptsize \put(0,0){(e)}
+      \end{overpic}
+    \end{minipage}%
+  }% end makebox
+
+  \caption{Synthesis of a point source by using a finite linear SSD segment with total length of 4\,m.
+  Fig. (a-c) shows the synthesis of a virtual source at $\vx_{\mathrm{s}}=\posvec{2}{0}{-1}\,\mathrm{m}$ with (b-c) illustrating the frequency response at in the frontal ($\vx_{\mathrm{r}_1}=\posvec{2}{0}{1.5}\,\mathrm{m}$) and an exemplary lateral ($\vx_{\mathrm{r}_2}=\posvec{2}{1.5}{1}\,\mathrm{m}$) receiver position on the reference line.
+  Fig. (d-e) shows the synthesis of a virtual source at $\vx_{\mathrm{s}}=\posvec{2}{2}{-1}\,\mathrm{m}$, with the frequency response measured at $\vx_{\mathrm{r}_1}=\posvec{2}{0}{1.5}\,\mathrm{m}$.
+  In each cases the estimated lower cutoff frequencies are highlighted by dashed line.}
+  \label{Fig:Psynth_linear}
 \end{figure}
+
 
 \paragraph{Cutoff frequency for a virtual plane wave}
 For the special case of a virtual plane wave, propagating towards the direction $\vk^{\mathrm{PW}}$ for the principle radii $\rho^P_{\mathrm{v/h}}(\vx) =\infty$ holds, and the integrand amplitude is given by
@@ -708,28 +800,30 @@ Figure (b,d,f) shows the frequency response in the frontal ($\vx_{\mathrm{r}_1} 
 	\label{Fig:Psynth_circular}
 \end{figure}
 
-In each case the frequency response of the synthesized field along with the estimated low frequency limits are illustrated in the frontal direction and in an examplary lateral direction.
+For both cases the frequency response of the synthesized field along with the estimated low frequency limits are illustrated in the frontal direction and in an examplary lateral direction, while for the linear SSD case the synthesis is also investigated for a lateral virtual source position.
+For the linear case Fig.~\ref{Fig:Psynth_linear} also presents a test case with lateral virtual source position.
 The frequency response is normalized by it's ideal high frequency value, given by \eqref{eq:WFS_amp_dist}.
 The amplitude of the integrands are illustrated by white fill along the SSD contour for the lateral direction example.
-The resulting effective lengthes around the stationary position are denoted by a red contour along the SSD.
+The resulting effective lengths around the stationary position are denoted by a red contour along the SSD.
 
-It is reflected that in the present examples of symmetrical SSDs for the frontal position the effective lengthes, and, therefore, the two cutoff frequencies coincide.
+It is reflected that in the present examples of symmetrical SSDs for the frontal position the effective lengths, and, therefore, the two cutoff frequencies coincide.
 In both linear and circular SSD cases independently of the virtual source model the estimated low frequency limit is perfectly aligned with the apparent $0~\mathrm{dB}$ cut off frequencies of the simulated responses.
 On the other hand for the lateral responses highlight the role of the two estimated cutoff frequencies:
-Below $\min f_{c,1/2}$ the SPA does not hold at all: the frequency response changes with $\sim \sqrt{\omega}$, i.e. with $+10~\mathrm{dB/dec}$.
-Above $\max f_{c,1/2}$ the phase change exceeds $\pi/4$ on both sides of the stationary point, therefore, the SPA holds, and the frequency response sets to its asymptotic high frequency value along with the diffractional waves.
+\begin{itemize}
+\item Below $\min \{f_{c,1}, f_{c,2} \}$ the SPA does not hold at all: the frequency response changes with $\sim \sqrt{\omega}$ ($+10~\mathrm{dB/dec})$.
+\item Above $\max \{f_{c,1}, f_{c,2} \}$ the phase change exceeds $\pi/4$ on both sides of the stationary point, therefore, the SPA holds, and the frequency response sets to its asymptotic high frequency value (with the presence of diffractional artifacts).
 This frequency range is the validity range of 2.5D WFS theory.
-Between the two cutoff frequencies the phase changes enough only on one side of the stationary position (with the longer effective length).
-Subsequently, the integrand value can not be considered constant anymore, but the lobes of rapid oscillations does not cancel each other yet.
-This results in a transition frequency band with the slope of around $+5~\mathrm{dB/dec}$, but the actual response varies heavily, depending on the actual WFS geometry.
+\item Between the two cutoff frequencies the phase changes sufficiently only on one side of the stationary position (with the longer effective length).
+Subsequently, the integrand value can not be considered constant anymore, yet lobes of rapid oscillation do not cancel each other, resulting in a transition frequency band.
+Within this transition band the response decreases with $\approx 5~\mathrm{dB/dec}$.
+\end{itemize} 
 
-\subsection{Cutoff frequency as function of source and receiver position}
+\subsection{Cutoff frequency as function of receiver and source position}
 
-In the following the overall low frequency limit is investigated as the function of source position and receiver position.
-The low frequency limit is calculated as the higher one from $f_{c,1/2}$.
+In the following the low frequency limit is investigated as the function of source position and receiver position.
+The presented overall low frequency limit is calculated as $\max \{f_{c,1}, f_{c,2} \}$.
 
-Fig.~\ref{Fig:fc_spat_dist_linear} (a-b) depicts the spatial variancy of the low frequency limit of WFS with varying receiver position with a fixed virtual source model chosen to be a virtual plane wave and a point source respectively by applying a finite linear SSD.
-Similary, Fig.~\ref{Fig:fc_spat_dist_circular} (a-c) depict the same quantity in case of a circular SSD with the further example of a focused point source.
+Fig.~\ref{Fig:fc_vs_recpos} depicts the spatial variance of the low frequency limit with varying receiver position and with a fixed virtual source model chosen to be a virtual plane wave and a focused/unfocused point source.
 \begin{figure} 
   \begin{center}
     \begin{overpic}[width = 0.44\columnwidth ]{figs/Fc2_lin_vs_recpos_pw.png}
@@ -742,81 +836,88 @@ Similary, Fig.~\ref{Fig:fc_spat_dist_circular} (a-c) depict the same quantity in
 	\put(0,0){(b)}
 	\end{overpic}
   \\ \vspace{2mm}
-%%
-  \begin{overpic}[width = 0.44\columnwidth ]{figs/Fc2_lin_vs_sourcepos.png}
-	\scriptsize
-	\put(0,0){(c)}
-	\end{overpic}
-  \hfill
-    \begin{overpic}[width = 0.51\columnwidth ]{figs/Fc2_lin_vs_sourcepos_cross.png}
-	\scriptsize
-	\put(0,0){(d)}
-	\end{overpic}
-\end{center}
-\caption{Lower frequency limit of 2.5D WFS as the function of receiver position (a-b) and virtual source position (c-d) in case of synthesis applying a linear SSD segment.
-Figure (a) and (b) shows the cutoff frequency vs. receiver position in case of a virtual plane wave and an unfocused point source respectively.
-Figure (c) shows the cutoff frequency as function of virtual source position, while (d) shows the same quantity along the frontal position ($x=0$, as denoted by dashed line in (c)) with varying SSD length.
-All the simulations were ran with a Hann window tapering with tapering coefficient of 0.25.}
-	\label{Fig:fc_spat_dist_linear}
-\end{figure}
-From the simulation results it is apparent that the lower frequency limit of WFS is maximal in frontal positions and degrade rapidly into lateral directions: even within the illuminated region the lower frequency limit may exceed $1~\mathrm{kHz}$.
-Below this cutoff frequency---between the transition of the two cutoff frequencies derived in the previous section---the frequency response slightly decreases within the range of $4-5~\mathrm{dB}$, as it can be observed in Figs.~\ref{Fig:Psynth_linear} and \ref{Fig:Psynth_circular} with approximately $-5~\mathrm{dB/decade}$.
-This loss of low frequencies is, however, can be still clearly audible, potentially leading to a coloration in the low frequency region.
-Below the minimal cutoff frequency (which coincides with the maximal one into frontal directions) the frequency response decreases with $-20~\mathrm{dB/decade}$ leading to enhanced loss of low frequency response.
-
-\begin{figure} 
-  \begin{center}
     \begin{overpic}[width = 0.3\columnwidth ]{figs/Fc_circ_pw.png}
 	\scriptsize
-	\put(0,0){(a)}
+	\put(0,0){(c)}
 	\end{overpic}
 %
     \begin{overpic}[width = 0.3\columnwidth ]{figs/Fc_circ_ps.png}
 	\scriptsize
-	\put(0,0){(b)}
+	\put(0,0){(d)}
 	\end{overpic}
 %
     \begin{overpic}[width = 0.36\columnwidth ]{figs/Fc_circ_fps.png}
 	\scriptsize
-	\put(0,0){(c)}
+	\put(0,0){(e)}
+	\end{overpic}
+  
+%%
+\end{center}
+\caption{Lower frequency limit of 2.5D WFS as the function of receiver position in case of synthesis applying a linear SSD segment (a-b) and a circular SSD (c-e).
+Figure (a,c) and (b,d) shows the cutoff frequency vs. receiver position in case of a virtual plane wave and an unfocused point source respectively, while (e) show the virtual focused source case.
+All the simulations were ran with a Hann window tapering with tapering coefficient of 0.25.}
+	\label{Fig:fc_vs_recpos}
+\end{figure}
+
+Across both SSD types, $f_c$ is smallest in the frontal region and increases rapidly toward lateral directions; even inside the illuminated region it can exceed $1~\mathrm{kHz}$. 
+In the transition band between the two limits $f_{c,1}$ and $f_{c,2}$, the synthesized response is typically $4$–$5$~dB down (cf.\ Figs.~\ref{Fig:Psynth_linear} and \ref{Fig:Psynth_circular}), which can be audible as low-frequency coloration.
+
+\begin{figure} 
+  \begin{center}
+      \begin{overpic}[width = 0.44\columnwidth ]{figs/Fc2_lin_vs_sourcepos.png}
+	\scriptsize
+	\put(0,0){(a)}
+	\end{overpic}
+%  \hfill
+    \begin{overpic}[width = 0.51\columnwidth ]{figs/Fc2_lin_vs_sourcepos_cross.png}
+	\scriptsize
+	\put(0,0){(b)}
 	\end{overpic}
   \\ \vspace{2mm}
   %
-    \begin{overpic}[width = 0.3\columnwidth ]{figs/Fc2_circ.png}
+    \begin{overpic}[width = 0.33\columnwidth ]{figs/Fc2_circ.png}
+	\scriptsize
+	\put(0,0){(c)}
+	\end{overpic}
+  \hfill
+    \begin{overpic}[width = 0.65\columnwidth ]{figs/Fc2_circ_crosssec.png}
 	\scriptsize
 	\put(0,0){(d)}
 	\end{overpic}
-  \hfill
-    \begin{overpic}[width = 0.6\columnwidth ]{figs/Fc2_circ_crosssec.png}
-	\scriptsize
-	\put(0,0){(e)}
-	\end{overpic}
 \end{center}
-\caption{Lower frequency limit of 2.5D WFS as the function of receiver position (a-c) and virtual source position (d-e) in case of synthesis applying a circular SSD.
-Figure (a), (b) and (c) shows the cutoff frequency vs. receiver position in case of a virtual plane wave, an unfocused point source and a focused point source respectively.
-Figure (d) shows the cutoff frequency as function of virtual source position, while (e) shows the same quantity along the frontal position ($y=0$), as denoted by dashed line in (d) with varying SSD length.
-Figure (e) depicts the cutoff frequency using a tapering window coefficient of 0.25 with solid, and 0.5 with a dashed line.
+\caption{Lower frequency limit of 2.5D WFS as the function of virtual source position  in case of synthesis applying a a linear SSD segment (a-b) and a circular SSD (c-d).
+Figure (a,c) shows the 2D distribution of cutoff frequency with the same color scale as Fig.~\ref{Fig:fc_vs_recpos} while (b,d) shows the same quantity along the frontal position (denoted by dashed line in (a,c)) with varying SSD size.
+All the simulations were ran with a Hann window tapering with tapering coefficient of $\alpha = 0.25$, while (d) also shows the effect of applying $\alpha = 0.5$ denoted by dashed line.
 }
-	\label{Fig:fc_spat_dist_circular}
+	\label{Fig:fc_vs_vspos}
 \end{figure}
 
-As a more important aspect on investigation in the aspect of synthesizing dynamically changing sound fields (e.g. field of a moving source) Fig.~\ref{Fig:fc_spat_dist_linear} (c-d) and Fig.~\ref{Fig:fc_spat_dist_circular} (d-e) depict the spatial dependency of the lower cutoff frequency as the function of virtual source position applying a linear and a circular SSD respectively.
+
+As an important aspect of synthesizing dynamically changing sound fields (e.g. field of a moving source) Fig.~\ref{Fig:fc_vs_vspos} depicts the spatial dependency of the lower cutoff frequency as the function of virtual source position applying a linear and a circular SSD.
 For the linear case the receiver position is fixed to the frontal position, while for the circular case it is fixed to the center of the array.
-Obivously, for the circular case the lower cutoff frequency is rotationally invariant around the center due to the synthesis geometry (being an inherent advantage of the circular SSD geometry).
-On the other hand, similarly to changes in the receiver position, the lower cutoff frequency increase rapidly towards lateral directions.
-This 
+Similarly for the receiver position, for the linear case the lower cutoff frequency increases rapidly towards lateral directions.
+On the other hand, for the circular case the lower cutoff frequency is rotationally invariant around the center due to the synthesis geometry, being an inherent advantage of the circular SSD geometry when synthesizing sources under motion.
 
-In both cases, the freuqency limit rises 
-
-
-
+In both geometries, the cutoff frequency increases rapidly—and in theory without bound—as the virtual source approaches either the SSD or the receiver, again, resulting in an audible loss of low frequency content. 
+At comparable array scales (\(L_{\mathrm{SSD}}\!\approx\! d_{\mathrm{SSD}}\)), a circular SSD yields a higher low-frequency limit for focused sources, whereas a linear SSD is more favorable for sources far from the array. 
+The reason is that, in a circular geometry, the effective window length is largest for a focused source: the driving amplitude remains finite along the active arc instead of vanishing toward its endpoints; for a virtual plane wave, the gradient of the virtual field vanishes near the rim, which shortens the effective window. 
+The situation reverses for a linear SSD: a plane wave produces an almost constant driving amplitude along the array (hence a long effective window), while for sources close to the SSD the driving decays strongly toward the ends and, due to the focusing operation, the phase varies more slowly along the SSD—both effects reduce the effective window and raise the cutoff frequency.
 
 
 \section{Conclusion}
 
+This paper established explicit low-frequency validity limits for 2.5D WFS by linking the 2.5D Kirchhoff approximation to the stationary phase approximation (SPA) through an \emph{effective window length} that compresses the impact of SSD size, tapering, referencing, and source/receiver proximity into a single quantity. We derived a closed-form cutoff condition (Eq.~\eqref{eq:low_freq_limit}) that yields two asymmetric critical frequencies \(f_{c,1}\) and \(f_{c,2}\) determined by the effective lengths on either side of the stationary point; the overall validity limit is \(\max\{f_{c,1},f_{c,2}\}\). In frontal directions the result recovers classical Fresnel theory: the SPA becomes valid once the phase increment from the stationary point to the effective window edge reaches \(\pi/4\) (i.e., a half-wavelength across the full effective window), corresponding to a Fresnel number of \(F=0.25\).
+
+The analysis explains and predicts the main trends observed in practice. The cutoff rises steeply for lateral listening positions and for sources or receivers close to the SSD, and it scales inversely with the square of the effective window length. Between the two partial limits, a transition band appears in which the synthesized response is typically \(4\)–\(5\)~dB below the asymptotic level (cf.\ Figs.~\ref{Fig:Psynth_linear} and \ref{Fig:Psynth_circular}). Simulations with linear and circular SSDs for plane, point, and focused sources validate the theory, including the predicted spatial patterns in Figs.~\ref{Fig:fc_vs_recpos} and \ref{Fig:fc_vs_vspos}. At comparable array scales (\(L_{\mathrm{SSD}}\!\approx d_{\mathrm{SSD}}\)), circular SSDs provide higher low-frequency limits for focused sources (long effective window along the active arc), whereas linear SSDs are advantageous for distant/plane-wave–like sources (nearly constant driving and hence a long effective window).
+
+These results offer concrete design guidance: keep sources and listeners away from the SSD where possible; choose SSD size and referencing to maximize the effective window length and the effective distance \(d_h^{\mathrm{c}}\); avoid overly aggressive tapering that shortens the window; prefer circular arrays for moving and focused sources (rotational invariance), and linear arrays for distant or plane-wave reproduction.
+
+Finally, the audibility of the low-frequency loss—especially for lateral conditions—was confirmed by informal listening. The listening test can be \emph{reproduced} with our open-source framework: MATLAB scripts for the figures are available at \href{https://github.com/gfirtha/ieee2025b_firtha/tree/gfirtha/MATLAB}{\uline{\small{https://github.com/gfirtha/ieee2025b\_firtha/tree/gfirtha/MATLAB}}}, and real-time binaural rendering for interactive exploration is provided by \href{https://github.com/gfirtha/binauralizer}{\uline{\small{https://github.com/gfirtha/binauralizer}}}.
+
+
 \appendix[A local SPA validity criterion]
 \label{app:local_SPA}
-As a simple local validity condition for the SPA it may be required that the leading order term should dominate over the second one in the integral's expansion around the stationary poisition.
+As a simple local validity condition for the SPA it may be required that the leading order term should dominate over the second one in the integral's expansion around the stationary position.
 From \eqref{eq:SPA_series} this condition can be expressed as
 \begin{equation}
   |I_0(k)| \geq \left| \frac{I_1(k)}{  \ti k |\Phi^{''}(s^*)|} \right|.
