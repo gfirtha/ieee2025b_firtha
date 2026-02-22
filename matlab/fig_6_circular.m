@@ -1,6 +1,6 @@
 clear
 close all
-
+addpath(genpath('Functions'))
 rSSD = 2;         % SSD radius
 nSSD = 360*4;       % secondary source number
 xSource = [1, 0 ];    % source position
@@ -53,7 +53,7 @@ R0 = sqrt( (X-xSource(1)).^2 + (Y-xSource(2)).^2  );
 Pref  = 1/(4*pi)*exp(-1i*k0*R0)./R0;
 
 %%
-[x0Stat,x0StatX,x0StatY,xRefStat] = get_stat_pos(xRec(:,1),xRec, xSource, rSSD,F);
+[x0Stat,xRefStat] = get_stat_pos(xRec, xSource, rSSD,F);
 
 for ri = 1 :  size(xRec,1)
     [~,stat_ix(ri)] = min(sum((x0-x0Stat(ri,:)).^2,2));
@@ -177,3 +177,4 @@ set(gca,'FontName','Times New Roman');
 allAxesInFigure = findall(fig,'type','axes');
 set(allAxesInFigure,'FontSize',ftsize);
 set(gcf,'PaperPositionMode','auto');
+%print( '-r300', 'focused_vused_fres_unfocq','-dpng')

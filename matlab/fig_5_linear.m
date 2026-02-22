@@ -157,6 +157,7 @@ yl = gca().YLim;
 sl1 = plot([fc(1),fc(1)],yl,'LineWidth',1.5,'LineStyle',':','Color','black');
 sl2 = plot([fc(2),fc(2)],yl,'LineWidth',1.5,'LineStyle','--','Color','black');
 %ylim([-10,2])
+%xlim([20,10e3])
 
 
 grid on

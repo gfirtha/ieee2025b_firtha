@@ -1,4 +1,4 @@
-function [x0Stat,x0StatX,x0StatY,xRefStat] = get_stat_pos(X,Xfield, xSource, rSSD, F)
+function [x0Stat,xRefStat] = get_stat_pos(Xfield, xSource, rSSD, F)
 
 % %%
 % Vector from source to each grid point
@@ -36,9 +36,6 @@ useP1 = d1 < d2;
 x0Stat = P1;
 x0Stat(~useP1,:) = P2(~useP1,:);
 
-% Optionally reshape to grid
-x0StatX = reshape(x0Stat(:,1), size(X));
-x0StatY = reshape(x0Stat(:,2), size(X));
 
 k0 = (x0Stat - xSource)./sqrt(sum((x0Stat - xSource).^2,2));
 xRefStat  = x0Stat + F*k0*rSSD;
