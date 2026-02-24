@@ -1,0 +1,67 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{caption}
+
+% Define colors for different sections
+\definecolor{revcolor}{RGB}{0,0,139} % Dark Blue for Reviewer Comments
+\definecolor{anscolor}{RGB}{34,139,34} % Forest Green for Authors' Response
+
+\newcommand{\reviewercomment}[1]{\noindent\textbf{\textcolor{revcolor}{#1}}}
+\newcommand{\authorresponse}{\noindent\textit{\textcolor{anscolor}{Authors' Response:}} }
+\newcommand{\manuscriptchange}{\vspace{5pt}\noindent\textbf{Changes in Manuscript:} }
+
+\begin{document}
+
+\title{Response to Reviewers for T-ASL-12200-2025\\``Limitations of Wave Field Synthesis Part II: low-frequency limits''}
+\author{Gergely Firtha}
+\date{\today}
+\maketitle
+
+\section*{General Response to the Editor}
+The authors thank the Associate Editor and the reviewers for their valuable and constructive feedback. In response to the comments, the manuscript has been thoroughly revised. Specifically, we have:
+\begin{itemize}
+    \item Provided explicit referencing to the first author's PhD thesis and clarified the novel contributions of this paper[cite: 2371, 2372, 2406].
+    \item Unified the nomenclature and notation as requested by Reviewer 3[cite: 2415, 2421, 2437].
+    \item Improved the clarity of mathematical derivations and introduced all variables formally[cite: 2425, 2433].
+    \item Corrected all formatting and link issues[cite: 2389, 2398].
+\end{itemize}
+
+\section*{Response to Reviewer 1}
+\reviewercomment{(1) Operators in multi-line equations: The reviewer recommends maintaining a consistent style for all multi-line equations throughout the manuscript.}
+
+\authorresponse We apologize for the lack of consistency in the multi-line equation formatting. We have now standardized all equations (specifically Eqs. 4, 19, 21, 26, 45, 46, 47, and 50) following the reviewer's preferred style, where the operator appears at the beginning of the new line. [cite: 950, 952]
+
+\manuscriptchange Equations spanning multiple lines have been reformatted for consistency. For example, in Eq. (4), the equality operator now consistently appears at the start of subsequent lines. [cite: 55, 697]
+
+%%
+\reviewercomment{(2) Usage of abbreviations: In the abstract, the abbreviation ``SSD'' appears without its full spelling. In addition, the abbreviation ``SPA'' is used only once, which makes introducing it unnecessary.}
+
+\authorresponse We thank the reviewer for this observation. We have revised the abstract to define ``secondary source distribution (SSD)'' upon its first mention[cite: 958]. Furthermore, we have removed the abbreviation ``SPA'' from the abstract as it was only used once, opting for the full term ``stationary phase approximation'' to improve clarity for the reader[cite: 959]. Similar corrections were made in the Introduction and Section II-A to ensure that SSD is defined only once at the beginning of the manuscript[cite: 960].
+
+\manuscriptchange The abstract has been updated to include full spellings for SSD and removed the unnecessary SPA abbreviation. The first paragraph of Section I now introduces the SSD abbreviation, and subsequent redundant definitions (e.g., in Section II-A) have been removed.
+
+%%
+\reviewercomment{(3) Invalid external link: The reviewer encountered a 404 error when accessing the GitHub link.}
+
+\authorresponse We thank the reviewer for pointing this out. The repository was set to private during the initial submission phase. We have now made the repository public and verified that the link is fully accessible. [cite: 961, 962]
+
+\manuscriptchange The URL in the "Reproducible Research" paragraph has been verified and updated to ensure it points to the public branch of the repository. [cite: 30, 690]
+
+\section*{Response to Reviewer 2}
+\reviewercomment{There is significant similarity in material to the author's available PhD thesis... it would be useful to have included explicit coverage of the improvements proffered by this paper.} [cite: 2406]
+
+\authorresponse{We appreciate this observation. We have now explicitly cited the PhD thesis in the Introduction and added a summary of the new theoretical developments—specifically the closed-form cutoff frequency (Eq. 35) and the link to Fresnel zone theory—which were not detailed in the earlier work.}
+
+\section*{Response to Reviewer 3}
+\reviewercomment{Sec I. A formal software citation should be used incl. version and an DOI}
+
+\authorresponse We have added a formal software citation for the MATLAB repository, including the version and DOI (10.5281/zenodo.18474780). The bibliography has been updated with a software entry to comply with current citation standards.
+
+\manuscriptchange The Introduction now includes a formal reference to the code repository alongside the URL, and the BibTeX database has been updated with the Zenodo DOI citation.
+% We will populate this on the fly as we rework Section II and III
+
+\end{document}

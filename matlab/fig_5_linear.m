@@ -45,8 +45,6 @@ end
 R = sqrt((X-xSource(1)).^2 + (Y - xSource(2)).^2 );
 P_target = 1./4/pi.*exp(-1i*k0*R)./R;
 
-
-
 x0Stat = xSource(1)-(xRec(:,1)-xSource(1))./(xRec(:,2)-xSource(2)).*xSource(2);
 xRefStat = (xRec(:,1)-xSource(1))./(xRec(:,2)-xSource(2))*(xRef(2)-xSource(2)) + xSource(1);
 
@@ -56,7 +54,7 @@ scale = 0.2;
 LW = 0.75;
 LW2 = 2.5;
 q= 7;
-pos = [ 0.15 0.175 0.8 0.8 ];
+pos = [ 0.16 0.125 0.825 0.9 ];
 ftsize = 13;
 
 ri = 1;
@@ -66,7 +64,7 @@ A0 = abs(Dx0_prop*1./rRec/4/pi);
 A0norm = A0/abs(A0(ix_stat));
 Leff = [-sum(A0norm(1:ix_stat)) sum(A0norm(ix_stat+1:end))]*dxSSD;
 
-f = figure('Units','points','Position',[150,150,250,200]);
+f = figure('Units','points','Position',[150,150,270,200]);
 p1 = axes('Units','normalized','Position',pos(1,:));
 pcolor(x,y,real(P_field),'FaceAlpha',0.75);
 hold on
