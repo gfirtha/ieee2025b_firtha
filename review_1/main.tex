@@ -35,9 +35,10 @@
 
 \begin{document}
 
-\title{Limitations of Wave Field Synthesis Part II:\\low-frequency limits}
+\title{Limitations of Wave Field Synthesis Part II:\\Low-Frequency Limits}
 
 \author{Gergely Firtha
+\thanks{G. Firtha is with the Department of Networked Systems and Services, Faculty of Electrical Engineering and Informatics, Budapest University of Technology and Economics, Műegyetem rkp. 3., H-1111 Budapest, Hungary, E-mail: firtha@hit.bme.hu}
 \thanks{Manuscript received April 19, 2021; revised August 16, 2021.}}
 
 
@@ -89,8 +90,8 @@ Moreover, we extend our discussion to focused sources, a case exhibiting pronoun
 % === “Paper structured as follows” paragraph (insert at end of Introduction) ===
 The remainder of the paper is organized as follows. Section~II revisits the theoretical bases: the problem formulation, the 3D Kirchhoff approximation, the stationary phase approximation, the derivation of the 2.5D Kirchhoff approximation, and the resulting 2.5D WFS driving functions. 
 Section~III develops the low-frequency limits: a qualitative near–far field analysis, the connection to Fresnel-zone theory, and a general validity condition culminating in the closed-form cutoff expression (Eq.~\eqref{eq:low_freq_limit}). 
-Section~IV presents application studies: cutoff estimates for linear and circular SSDs with plane, point, and focused sources; spatial maps versus receiver and source position; and the effects of tapering and referencing. 
-Finally, Section~V concludes with design guidelines and implications.
+Section~IV presents application studies: cutoff estimates for various synthesis geometries; spatial maps versus receiver and source position; and the effects of tapering and referencing. 
+Finally, Section~V concludes the contribution.
 
 Following the principles of reproducible research, the MATLAB code for the figures in this article is publicly accessible at \href{https://github.com/gfirtha/ieee2025b_firtha/tree/main/matlab}{\uline{\small{https://github.com/gfirtha/ieee2025b\_firtha/tree/main/matlab}}}.
 Moreover, an open-source toolbox is available at \href{https://github.com/gfirtha/binauralizer}{\uline{\small{https://github.com/gfirtha/binauralizer}}} \cite{firtha_g_2026_18474780} for real-time binauralization of virtual WFS systems with adjustable source and receiver position/orientation, enabling listening tests of the present results, highlighting the lower cutoff frequency, effects of tapering, and supporting alternative WFS referencing schemes.
@@ -98,9 +99,11 @@ Moreover, an open-source toolbox is available at \href{https://github.com/gfirth
 
 \section{Theoretical basics}
 
+\IEEEpubidadjcol
 \subsection{Problem formulation}
 The theoretical framework presented in this section largely follows the generalized WFS theory developed in \cite{Firtha2019phd}, adapted here for the specific analysis of low frequency approximations.
 For more detailed explanation of the involved quantites the reader should refer to \cite{Firtha2025_ieee_a}.
+
 
 Consider an arbitrary three-dimensional steady-state sound field expressed generally in polar form as
 \begin{equation}
@@ -407,8 +410,17 @@ However, that local approach ignores the finite SSD size, which dominates in WFS
 %It should be noted that the following discussion both holds in the context of WFS and more generally for the 2.5D Kirchhoff approximation, therefore, they are discussed adjointly.
 In the following, a physically motivated approach is introduced that accounts for the finite size of the SSD.
 This method focuses on the aperture-limited behavior rather than the relative rates of change between amplitude and phase along the integration path.
-Consequently, this approach is primarily applicable to smooth or enclosing SSD contours, which represents a realistic requirement for most WFS applications.\footnote{For non-smooth geometries, such as rectangular SSDs, the low-frequency limit must be evaluated by considering each smooth (linear) segment independently. 
-The discontinuities at the corners of such distributions give rise to diffraction artifacts, which are treated separately using the asymptotic framework presented in Part I of this series \cite{Firtha2025_ieee_a}.}
+The proposed theoretical framework is initially presented for smooth and potentially enclosing SSDs. 
+However, the methodology is readily extendable to non-smooth geometries, such as rectangular arrays, by treating the entire boundary as a single piecewise-linear contour. 
+In these cases, the required integrations presented in the following are performed along all contributing segments of the enclosure.
+%While such geometries introduce additional local discontinuities at the corners that give rise to edge-diffraction artifacts, the fundamental low-frequency roll-off of the synthesized field remains governed by the total phase increment accumulated across the entire active aperture.
+
+%Consequently, this approach is primarily applicable to smooth or enclosing SSD contours, which represents a realistic requirement for most WFS applications.
+%\footnote{For non-smooth geometries, such as rectangular SSDs, the low-frequency limit is evaluated by treating the entire enclosure as a single piecewise-continuous contour. 
+%The effective aperture length $\hat{L}_{\mathrm{eff}}$ is then calculated by integrating the amplitude distribution along all contributing segments. 
+%While the corners of such distributions introduce local discontinuities that give rise to edge-diffraction artifacts, the underlying low-frequency roll-off remains governed by the phase increment across the total active aperture.}
+%\footnote{For non-smooth geometries, such as rectangular SSDs, the low-frequency limit must be evaluated by considering each smooth (linear) segment independently. 
+%The discontinuities at the corners of such distributions give rise to diffraction artifacts, which are treated separately using the asymptotic framework presented in Part I of this series \cite{Firtha2025_ieee_a}.}
 It should be noted that the following discussion holds both for WFS driving functions and, more generally, for the 2.5D KA; therefore, these frameworks are discussed concurrently.
 
 \subsection{Qualitative Analysis}

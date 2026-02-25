@@ -1,67 +1,503 @@
-\documentclass[10pt]{article}
+\documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
+\usepackage{amsmath}
 \usepackage{geometry}
-\geometry{a4paper, margin=1in}
+\geometry{letterpaper, margin=1in}
+\usepackage{graphicx}
 \usepackage{xcolor}
-\usepackage{enumitem}
-\usepackage{caption}
+\usepackage{hyperref} 
 
-% Define colors for different sections
-\definecolor{revcolor}{RGB}{0,0,139} % Dark Blue for Reviewer Comments
-\definecolor{anscolor}{RGB}{34,139,34} % Forest Green for Authors' Response
+% Input your custom math definitions
+\input{scidefs.tex} 
 
-\newcommand{\reviewercomment}[1]{\noindent\textbf{\textcolor{revcolor}{#1}}}
-\newcommand{\authorresponse}{\noindent\textit{\textcolor{anscolor}{Authors' Response:}} }
-\newcommand{\manuscriptchange}{\vspace{5pt}\noindent\textbf{Changes in Manuscript:} }
+% Define colors for comments and responses
+\definecolor{ReviewerColor}{rgb}{0.1, 0.1, 0.7} % Dark Blue
+\definecolor{ResponseColor}{rgb}{0.0, 0.0, 0.0} % Black
+
+% Setup hyperref
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    citecolor=black, 
+    linktoc=all 
+}
+
+% Define a new environment for reviewer comments
+\newenvironment{reviewercomment}{%
+    \begin{list}{}{%
+        \setlength{\leftmargin}{20pt}%
+        \setlength{\rightmargin}{0pt}%
+        \setlength{\listparindent}{0pt}%
+        \setlength{\itemindent}{0pt}%
+        \setlength{\parsep}{0pt}%
+        \setlength{\itemsep}{5pt}%
+    }
+    \item[] \color{ReviewerColor} \em%
+}{%
+    \end{list}%
+}
+
+% Define a new environment for our responses
+\newenvironment{myresponse}{%
+    \begin{list}{}{%
+        \setlength{\leftmargin}{20pt}%
+        \setlength{\rightmargin}{0pt}%
+        \setlength{\listparindent}{0pt}%
+        \setlength{\itemindent}{0pt}%
+        \setlength{\parsep}{0pt}%
+        \setlength{\itemsep}{5pt}%
+    }
+    \item[] \color{ResponseColor}%
+}{%
+    \end{list}%
+}
+
 
 \begin{document}
 
-\title{Response to Reviewers for T-ASL-12200-2025\\``Limitations of Wave Field Synthesis Part II: low-frequency limits''}
 \author{Gergely Firtha}
-\date{\today}
+\title{\textbf{Response to Reviewers} \\ \large T-ASL-12200-2025: "Limitations of Wave Field Synthesis Part II: low-frequency limits"}
+\date{\today} 
+
 \maketitle
+\clearpage 
 
-\section*{General Response to the Editor}
-The authors thank the Associate Editor and the reviewers for their valuable and constructive feedback. In response to the comments, the manuscript has been thoroughly revised. Specifically, we have:
-\begin{itemize}
-    \item Provided explicit referencing to the first author's PhD thesis and clarified the novel contributions of this paper[cite: 2371, 2372, 2406].
-    \item Unified the nomenclature and notation as requested by Reviewer 3[cite: 2415, 2421, 2437].
-    \item Improved the clarity of mathematical derivations and introduced all variables formally[cite: 2425, 2433].
-    \item Corrected all formatting and link issues[cite: 2389, 2398].
-\end{itemize}
+\tableofcontents
+\clearpage 
 
-\section*{Response to Reviewer 1}
-\reviewercomment{(1) Operators in multi-line equations: The reviewer recommends maintaining a consistent style for all multi-line equations throughout the manuscript.}
+Dear Dr. Ahrens and Esteemed Reviewers,
 
-\authorresponse We apologize for the lack of consistency in the multi-line equation formatting. We have now standardized all equations (specifically Eqs. 4, 19, 21, 26, 45, 46, 47, and 50) following the reviewer's preferred style, where the operator appears at the beginning of the new line. [cite: 950, 952]
+\vspace{1cm} 
 
-\manuscriptchange Equations spanning multiple lines have been reformatted for consistency. For example, in Eq. (4), the equality operator now consistently appears at the start of subsequent lines. [cite: 55, 697]
+We wish to express our sincere gratitude for the exceptionally thorough reviews and constructive feedback provided on our manuscript. We found the reviewers' criticisms regarding the initial submission to be highly justified; we agree that the first version was inconsistent in its notation, occasionally sloppy in its presentation, and hindered by awkward grammatical constructions that made the dense mathematical treatise difficult to follow.
 
-%%
-\reviewercomment{(2) Usage of abbreviations: In the abstract, the abbreviation ``SSD'' appears without its full spelling. In addition, the abbreviation ``SPA'' is used only once, which makes introducing it unnecessary.}
 
-\authorresponse We thank the reviewer for this observation. We have revised the abstract to define ``secondary source distribution (SSD)'' upon its first mention[cite: 958]. Furthermore, we have removed the abbreviation ``SPA'' from the abstract as it was only used once, opting for the full term ``stationary phase approximation'' to improve clarity for the reader[cite: 959]. Similar corrections were made in the Introduction and Section II-A to ensure that SSD is defined only once at the beginning of the manuscript[cite: 960].
 
-\manuscriptchange The abstract has been updated to include full spellings for SSD and removed the unnecessary SPA abbreviation. The first paragraph of Section I now introduces the SSD abbreviation, and subsequent redundant definitions (e.g., in Section II-A) have been removed.
+In response, we have performed a comprehensive overhaul of the manuscript, re-wording almost the entire text to improve clarity and flow. Regarding the mathematical framework, we have endeavored to introduce all concepts in greater detail to make the paper more self-contained. Specifically, we have foundationally reformulated and rearranged the derivations in the "Low-frequency limits" section (Section III). We believe this new structure provides a more logical progression that is significantly easier for the reader to follow.
 
-%%
-\reviewercomment{(3) Invalid external link: The reviewer encountered a 404 error when accessing the GitHub link.}
+Furthermore, we have implemented several graphical enhancements to the spatial maps. Most notably, contour lines were added to the cutoff-frequency vs. receiver position maps (e.g., Fig. 7 and 8). While this is a minor modification, it now clearly illustrates the physical regions in front of the SSD with the highest synthesis bandwidth—specifically showing that the optimal performance is achieved at positions that are neither too close to nor too far from the SSD distribution.
 
-\authorresponse We thank the reviewer for pointing this out. The repository was set to private during the initial submission phase. We have now made the repository public and verified that the link is fully accessible. [cite: 961, 962]
+Furthermore, we sincerely apologize for the broken GitHub link and the significant delay  in submitting this revision. The repository was initially empty due to an oversight during the submission phase. Subsequently, a severe hardware failure (SSD crash) resulted in the loss of the original simulation code. This necessitated a complete reimplementation of the entire framework from scratch. We have now successfully restored, populated, and verified the repository for public access.
 
-\manuscriptchange The URL in the "Reproducible Research" paragraph has been verified and updated to ensure it points to the public branch of the repository. [cite: 30, 690]
+We now proceed with the point-by-point response to the specific reviewer comments.
 
-\section*{Response to Reviewer 2}
-\reviewercomment{There is significant similarity in material to the author's available PhD thesis... it would be useful to have included explicit coverage of the improvements proffered by this paper.} [cite: 2406]
+\clearpage 
+\hrulefill
+\section*{Reviewer 1}
+\addcontentsline{toc}{section}{Reviewer 1} 
+\hrulefill
 
-\authorresponse{We appreciate this observation. We have now explicitly cited the PhD thesis in the Introduction and added a summary of the new theoretical developments—specifically the closed-form cutoff frequency (Eq. 35) and the link to Fresnel zone theory—which were not detailed in the earlier work.}
+We would like to thank Reviewer 1 for their encouraging words regarding the theoretical contribution of this work and for their meticulous attention to the formatting of our equations and the consistency of our nomenclature.
 
-\section*{Response to Reviewer 3}
-\reviewercomment{Sec I. A formal software citation should be used incl. version and an DOI}
+\begin{reviewercomment}
+    (1) Operators in multi-line equations: There are several equations in this paper that span multiple lines. In some of these equations (e.g., Eqs. (22) and (23)), the operator is written only once. In others, the same operator appears twice—at the end of the first line and again at the beginning of the second line (e.g., the equal signs in Eqs. (4), (45), (46), and (50); the approximation operator in Eq. (19); the multiplication operators in Eqs. (21) and (26); and the minus operators in Eqs. (26), (41), and (47)). Moreover, in some cases (e.g., Eqs. (20) and (28)), the operator is omitted from both lines. Although the reviewer prefers the first style, it is up to the authors to choose their preferred formatting. However, the reviewer recommends maintaining a consistent style for all multi-line equations throughout the manuscript.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} We agree with the reviewer's point on consistency. Eventually, we kept the convention that the operator is on the end of the line and repeated at the beginning of the new line to maintain consistency with Part I of this series.
+\end{myresponse}
 
-\authorresponse We have added a formal software citation for the MATLAB repository, including the version and DOI (10.5281/zenodo.18474780). The bibliography has been updated with a software entry to comply with current citation standards.
+\begin{reviewercomment}
+    (2) Usage of abbreviations: This paper is generally well written and easy to understand. However, there are a few minor issues regarding the use of abbreviations. In the abstract, the abbreviation “SSD” appears without its full spelling. In addition, the abbreviation “SPA” is used only once, which makes introducing it unnecessary. In Section II-A, the abbreviation “SSD” is defined again, even though it has already been defined in the first paragraph of Section I.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} We thank the reviewer for the observation regarding the consistency of abbreviations. We have conducted a thorough review of the manuscript's terminology and implemented required changes.
+\end{myresponse}
 
-\manuscriptchange The Introduction now includes a formal reference to the code repository alongside the URL, and the BibTeX database has been updated with the Zenodo DOI citation.
-% We will populate this on the fly as we rework Section II and III
+\begin{reviewercomment}
+    (3) Invalid external link: This paper provides MATLAB codes for readers to reproduce the results. However, the reviewer encountered a 404 error when accessing the first link (https://github.com/gfirtha/ieee2025b\_firtha/tree/gfirtha/MATLAB). The reviewer would appreciate it if the authors could ensure that the link remains valid and properly maintained after publication.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} We sincerely apologize for the broken link encountered during the review process. Due to a severe hardware failure (SSD crash) during the revision period, our local repository was compromised, necessitating a complete reimplementation of the simulation framework. We have successfully restored and verified the entire codebase. The repository is now fully populated, and we have double-checked the link to ensure it is publicly accessible and functional. We are committed to maintaining this repository as a permanent resource for the community. The updated link is: \url{https://github.com/gfirtha/ieee2025b_firtha}.
+\end{myresponse}
+
+\clearpage 
+\hrulefill
+\section*{Reviewer 2}
+\addcontentsline{toc}{section}{Reviewer 2} 
+\hrulefill
+
+We thank Reviewer 2 for their positive assessment of the paper's impact and for their diligent comparison of this work with the author's previous doctoral research.
+
+\begin{reviewercomment}
+    Overall, this is a useful contribution to the field, with clear impact around the low frequency limitations of 2.5D WFS and the Kirchhoff approximation usage. The paper is well written with a few minor spelling and grammatical errors. References [33] and [34] appear to be incomplete?
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} We thank the reviewer for the positive assessment. The incomplete references have been corrected.
+\end{myresponse}
+
+\begin{reviewercomment}
+    In summary, for this reviewer the paper is a ‘complete’ contribution (presumably with the companion paper) to the field. That said, there is significant similarity in material to the author’s available PhD thesis from 2019 and it would be useful (and should be an important part of the paper) to have included explicit coverage of the improvements/modifications/differences proffered by this paper over the earlier work (and incorporated papers) from 6-9 years ago.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} We appreciate the reviewer's diligent comparison. 
+    We have revised the Introduction and Section II to more clearly distinguish between the baseline theory established in the 2019 thesis and the novel research presented in this paper. 
+    As now explicitly stated in Section I, the 2019 PhD research established the general framework for linking Wave Field Synthesis (WFS) with ray theory, including the essential concepts of wavefront curvature and generalized referencing schemes. 
+    While these geometric foundations are recapitulated in Section II to ensure the manuscript is self-contained, they serve strictly as a baseline for the entirely novel contributions of this paper.
+    
+    The following elements represent a complete departure from the earlier work and are introduced here for the first time:
+    \begin{itemize}
+        \item \textbf{Analytical Investigation of the Low-Frequency Mechanism:} While the breakdown of the Stationary Phase Approximation (SPA) is a known theoretical limit, this paper provides the first rigorous investigation linking it fundamentally to the spectral behavior of 2.5D Kirchhoff and WFS distributions.
+        \item \textbf{Effective Window Length ($\hat{L}_{\mathrm{eff}}$):} The introduction of a new physical metric that quantifies the combined impact of array size, tapering, and proximity.
+        \item \textbf{Analytical Cutoff Equations:} The derivation of the dual cutoff frequencies (Eq. 24) based on the quarter-wavelength phase increment criterion.
+        \item \textbf{Focused Source Spectral Collapse:} The specific analysis of how focused source proximity leads to a rapid increase in the cutoff frequency.
+    \end{itemize}
+\end{myresponse}
+
+\clearpage 
+\hrulefill
+\section*{Reviewer 3}
+\addcontentsline{toc}{section}{Reviewer 3} 
+\hrulefill
+
+We are deeply grateful to Reviewer 3 for the time and care taken in analyzing our mathematically dense paper. Their extensive comments on notation and background theory were invaluable in guiding our revision.
+
+\begin{reviewercomment}
+    Sec I. A formal software citation should be used incl. version and an DOI
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} A formal software citation including the version and DOI has been added.
+\end{myresponse}
+
+\begin{reviewercomment}
+    Sec II.A. Eq.(1): $A^P$ is not introduced. Requires a more detailed introduction for the general reader; frequency domain, coordinates, etc.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} $A^P$ is now introduced. We have expanded Section II.A to include a more detailed introduction to the frequency domain representation and coordinates.
+\end{myresponse}
+
+\begin{reviewercomment}
+    Eq.(3): $\rho$ and eigs are not introduced.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} These terms have now been formally introduced in Section II.A.
+\end{myresponse}
+
+\begin{reviewercomment}
+    “In the far field of the source of the sound $|\kappa^P(x)| \ll k$ holds and the gradient can be approximated as” there seems to be a word missing in the sentence.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} This sentence has been corrected and extended for better clarity.
+\end{myresponse}
+
+\begin{reviewercomment}
+    Section partly superficial and no references given.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} This section has been extended with additional theoretical detail and relevant references.
+\end{myresponse}
+
+\begin{reviewercomment}
+    What is the desired sound field?
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} We have unified the nomenclature. The term "desired sound field" has been replaced with "target field" throughout the manuscript.
+\end{myresponse}
+
+\begin{reviewercomment}
+    Sec II.B. Eq.(7): Index n is not introduced.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} The index $n$ is now properly introduced.
+\end{myresponse}
+
+\begin{reviewercomment}
+    Eq.(7)-(8): Here a clear distinction should be taken between the synthesized sound field and the desired sound field. The mathematical background is not clear in this form.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} We have clarified that these equations refer to the integral formulation of an arbitrary sound field, rather than the synthesized field. The distinction between target and synthesized fields is now explicitly maintained.
+\end{myresponse}
+
+\begin{reviewercomment}
+    “In the context of WFS, the surface of integration $\Omega$ is chosen to be translationally invariant in the vertical direction; its intersection with the horizontal plane is the actual SSD contour (Fig. 1).” This sentence and its implications are not clear. It reads like 2D synthesis; however, the actual contour is in the horizontal plane.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} This sentence was removed and the explanation of the vertical translational invariance was moved to a later section to improve the logical flow.
+\end{myresponse}
+
+\begin{reviewercomment}
+    “…and secondary reflections between different parts of $\Omega$ are disregarded” This is not only a matter of the high-frequency approximation.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} We agree. The text has been extended to acknowledge the specific assumptions regarding secondary reflections beyond the high-frequency approximation.
+\end{myresponse}
+
+\begin{reviewercomment}
+    Eq.(10): Again, the index n is not introduced; how is the third power of the vector $x_0$ defined?
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} The index $n$ is now introduced. We clarified that the power applies to $k_n(x_0)$, using parentheses for clarity.
+\end{myresponse}
+
+\begin{reviewercomment}
+    “From the integral formulation (8) the 3D WFS driving functions could be directly extracted” not with above assumption of translationally invariance.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} The sentence regarding translational invariance was relocated, ensuring that the statement regarding driving functions now holds correctly within the context.
+\end{myresponse}
+
+\begin{reviewercomment}
+    Sec II. C. Eq.(11): $\phi$ is not introduced. Eq.(12): $s^*$ is not introduced. Eq.(13): $I_i$ and $\Phi$ are not introduced.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} All of these variables ($\phi$, $s^*$, $I_i$, $\Phi$) are now introduced at their first mention.
+\end{myresponse}
+
+\begin{reviewercomment}
+    Sec II.D. “Therefore, for virtual fields located in the synthesis plane…”: What implications does this constraint have on the virtual field? In Sec II.A., a desired sound field is mentioned; is this the same as the virtual field?
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} We have unified the notation to "target field." The text now clarifies that the target field is assumed to propagate in the horizontal plane.
+\end{myresponse}
+
+\begin{reviewercomment}
+    “…being the vertical radii of the target field and the Green’s function…”: What is the target field? Please unify the notations of the different fields. How is the radii of the target field defined?
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} The term "target field" is now used consistently. A footnote has been added to clarify the definition of the radii of the target field.
+\end{myresponse}
+
+\begin{reviewercomment}
+    Eq.(15): $\rho_h$ is not introduced.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} Both vertical and horizontal radii ($\rho_v$, $\rho_h$) are now introduced together.
+\end{myresponse}
+
+\begin{reviewercomment}
+    “Therefore, for virtual fields located in the synthesis plane with…”: The wavenumber k with index z is not introduced.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} $k_z$ is now introduced at its first mention.
+\end{myresponse}
+
+\begin{reviewercomment}
+    Eq.(16): In eq.(8) the integration is taken over $\Omega$. In eq.(14) there is only a $\Phi$ and not $\phi_{zz}$. It is not clear which steps have been taken to derive eq.(16).
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} We have corrected the typo. The text now explains that the integration over $\Omega$ is split into subsequent integrations with respect to $z$ and then $C$.
+\end{myresponse}
+
+\begin{reviewercomment}
+    “…the intended component of the synthesized field…”: what is the intended component?
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} We have added a discussion clarifying that the "intended field" represents the best-effort reconstruction of the target wavefront achievable with the secondary source distribution.
+\end{myresponse}
+
+\begin{reviewercomment}
+    Sec III. “Therefore, the following approach is mainly applicable for smooth, enclosing SSDs, being a realistic requirement for WFS applications.”: Many setups are of rectangular shape. How do the investigations given in this article apply to such setups?
+\end{reviewercomment}
+\begin{myresponse}
+ \textbf{Response:} We have clarified this in the main text of Section III. The theoretical framework is initially presented for smooth distributions but is readily extendable to non-smooth geometries, such as rectangular arrays, by treating the entire boundary as a single piecewise-linear contour. The required integrations for determining the effective aperture length are performed along all contributing segments of the enclosure.
+\end{myresponse}
+
+\begin{reviewercomment}
+    Sec III.A. “…is investigated, reproducing a point source inside a circular area, …”: In Sec II.D it is assumed that the virtual field is located in the synthesis plane. For a point source, this assumption does not hold. How is this handled?
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} We clarify that the field is investigated inside the circular area for a source outside. Focused sources have also been explicitly added to the analysis.
+\end{myresponse}
+
+\begin{reviewercomment}
+    Fig. 2 details (source count, frequency range, colorbar, and $\hat{P}$ notation) are missing or unclear.
+\end{reviewercomment}
+\begin{myresponse}
+ \textbf{Response:} We have updated the caption of Fig. 2 to include all relevant simulation parameters. We explicitly mention that a quasi-continuous distribution ($ds \approx 1$~cm) was used to avoid aliasing and that the vertical aperture was truncated at $\pm 5$~m. We also clarify that the frequency range was extended to 1~Hz specifically to visualize the theoretical asymptotic slopes, which is essential for the paper's core contribution. The notation $\hat{P}$ is now defined as the normalized synthesized pressure, and a colorbar has been added to subfigure (a).
+\end{myresponse}
+
+\begin{reviewercomment}
+    Sec III.B. How is the cutoff frequency defined? What practical motivation, relevance and implications does it have? Inspecting the results in Fig. 2 may lead to the conclusion that this is only relevant for very low frequencies, which is not applicable to practical setups.
+\end{reviewercomment}
+\begin{myresponse}
+\textbf{Response:} The definition of the cutoff frequency and its practical relevance for timbre consistency and listening area boundaries have been expanded upon in the text. 
+We have explicitly clarified the scenarios—such as lateral listening positions or sources in close proximity to the SSD—where the low-frequency limit climbs into the audible range ($> 500$~Hz), thus directly impacting the useful WFS band.
+
+\textbf{Changes in Manuscript:} Section III.B now includes a more rigorous definition of the cutoff frequency $f_c$. Furthermore, a detailed discussion has been added to Sections III.C and V regarding the practical implications of these limits, particularly identifying the specific geometric conditions that cause $f_c$ to shift from typical subwoofer ranges into the mid-frequency reproduction band.
+\end{myresponse}
+
+\begin{reviewercomment}
+    Eq.(24): Why is there a dot in the superscript of A? What does this denote?
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} We thank the reviewer for identifying this ambiguity. The notation $A^{D \cdot G}$ denotes the amplitude of the product of the secondary source driving function $D$ and the Green's function $G$. This term represents the total magnitude of the integrand for the synthesized sound field as defined in Eq. (16b). We have added an explicit statement to Section III-A clarifying this.
+\end{myresponse}
+
+\begin{reviewercomment}
+    Fig.4: The calligraphic letters T and G are not used in the manuscript.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} These symbols refer to the Tapering ($\mathfrak{T}$) and Illuminated ($\mathfrak{I}$) regions. 
+    Their definitions have now been integrated into caption of Fig. 4. to ensure a consistent link with Part I where they are rigorously defined.
+\end{myresponse}
+
+\begin{reviewercomment}
+    Sec IV.A. It seems that 2.5D synthesis is considered here, however this should be mentioned explicitly.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} This has been explicitly mentioned.
+\end{myresponse}
+
+\begin{reviewercomment}
+    “For the case of a virtual point source located…”: Is it assumed that the virtual point source is located outside the listening area?
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} Yes, this is now clearly stated.
+\end{myresponse}
+
+\begin{reviewercomment}
+    Eq.(36) How is the focused flag defined? What values does it take? Eq.(38) The pointed bracket is not defined.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} The focused flag is now appropriately defined. 
+    The pointed bracket was a mistype, it was a reintroduction of the scalar product.
+\end{myresponse}
+
+\begin{reviewercomment}
+    Fig.5.: What was the rationale behind the chosen positions and the overall geometry? Are these for instance extreme cases?
+\end{reviewercomment}
+\begin{myresponse}
+\textbf{Response:} The chosen geometries and positions represent critical "edge cases" that are highly relevant to practical WFS deployment.
+    \begin{itemize}
+        \item \textbf{Rationale for Geometry and Source Positions:} The lateral virtual source position is chosen specifically to represent the limit where a single linear segment of a larger rectangular enclosure is active.
+        \item \textbf{Dynamic Synthesis Implications:} These cases demonstrate that during the synthesis of a moving source (e.g., traveling from left to right), a listener positioned in front of the array would experience a significant "loss of bass" (up to 300~Hz) as the source approaches these lateral boundaries. This spectral loss occurs before the reconstruction transitions from one linear segment to the perpendicular segment of a rectangular array.
+        \item \textbf{Receiver Position and Shadow Zones:} The off-center receiver positions are intentionally chosen to be near the transition between the illuminated/tapered region and the geometric shadow zone. While these positions are eccentric, they remain within the illuminated zone as defined by the visibility criteria in Part I of this work. Showing the model's performance in these regions is vital, as these are the areas where standard WFS approximations are most likely to fail, leading to audible artifacts.
+    \end{itemize}
+\end{myresponse}
+
+\begin{reviewercomment}
+    Why are frequencies down to 1 Hz shown? A WFS system would typically be used down to 100-150 Hz and below that a subwoofer is used. Please consider to show audio relevant frequency range starting from 20 Hz or higher.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} While frequencies below 20 Hz are outside the practical audio range, the purpose of Figures 5 and 6 is to validate the mathematical consistency of the proposed model. 
+    Extending the frequency range to 1 Hz is necessary to clearly visualize the low-frequency asymptotic trends.
+    This confirms the accurate Identification of the transition between the diffraction-dominated regime and the high-frequency WFS plateau.
+\end{myresponse}
+
+\begin{reviewercomment}
+    As there is no spatial aliasing visible in the frequency responses, how were the integrals evaluated? What is the relevance of the lower/upper cut-off frequency? P hat used in the frequency responses is not introduced.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} Integrals were evaluated using a high-density SSD discretization ($ds = 1$ cm) to push the aliasing frequency beyond the range of interest. 
+    This is now explicitly stated in the manuscript.
+    $\hat{P}$ is now defined in the text, and the relevance of the transition band boundaries is clarified.
+\end{myresponse}
+
+\begin{reviewercomment}
+    Single linear arrays are rarely used for WFS... How would the results change if you would use a rectangular array where part of the synthesized field would be generated by the perpendicular array?
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} We agree that practical WFS systems often employ enclosing geometries, such as rectangular or circular arrays. Regarding the specific examples in the manuscript: in the cases illustrated (e.g., Fig. 5), the virtual source is positioned such that only one linear segment of a potential rectangular enclosure would be "active" (i.e., satisfying the selection criterion where the stationary point resides on that segment). 
+    For these specific configurations, the results would remain identical, as the perpendicular sides would contribute neither to the stationary phase reconstruction nor to the primary wavefront shape.
+    Regarding the general theory: the proposed methodology is fully applicable to enclosing rectangular arrays. A rectangular SSD can be treated as a single, piecewise-continuous contour. 
+    The theory would treat the entire enclosure as one SSD, and the involved integrals for the effective aperture length ($\hat{L}_{\mathrm{eff}}$) would be evaluated along all contributing sides.
+
+    \textbf{Corner Effects:} It is worth noting that a rectangular geometry introduces local discontinuities at the corners. These corners would act as additional truncation points, giving rise to edge-diffraction artifacts. 
+    While the low-frequency roll-off (the focus of this paper) is still governed by the phase increment across the active aperture, these corner-diffraction effects are well-described by the asymptotic theory provided in Part I of this work. 
+    In this sense, the circular SSD analyzed in Fig. 7 represents the limiting case of a polygon SSD with an infinite number of sides, demonstrating the robustness of the generalized Fresnel number approach for non-linear geometries.
+
+    \textbf{Changes in Manuscript:} Section III has been updated to explicitly state that the methodology extends to piecewise-linear contours like rectangular arrays.   
+    We have also added a discussion in Section IV.A clarifying that for the lateral source positions shown, the results for a single line segment are identical to those of a full rectangular enclosure.
+\end{myresponse}
+\begin{reviewercomment}
+    Fig.6: P hat is not introduced. It should be mentioned that the grey/red areas have been computed for the “lateral direction”. For results in the remainder of this manuscript Hann windows have been used, was this also the case here?
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} $\hat{P}$ is now introduced. We clarified that the grey/red areas refer to the lateral direction and confirmed the use of Hann windows.
+\end{myresponse}
+
+\begin{reviewercomment}
+    “For both cases the frequency response of the synthesized field along with the estimated low frequency limits are illustrated in the frontal direction and in an exemplary lateral direction…”: Denoting listener positions in a circular array as frontal/lateral is quite misleading.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} Wording was changed to "center/on-center" and "off-center."
+\end{myresponse}
+
+\begin{reviewercomment}
+    “…with the apparent 0 dB cut off frequencies…”: What is meant by this?
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} We clarified that the 0 dB point represents the transition between low-frequency and high-frequency asymptotic behavior.
+\end{myresponse}
+
+\begin{reviewercomment}
+    “It is noted here that this lower critical frequency…”: What is the critical frequency? Is this the cut-off frequency introduced before?
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} The naming has been unified to "cutoff frequency" throughout the manuscript.
+\end{myresponse}
+
+\begin{reviewercomment}
+    Sec.IV.B. Fig.7.,“All the simulations were ran with a Hann window tapering with tapering coefficient of 0.25.”: Such windowing is typically not applied in WFS... Why was this windowing chosen and how would the results for a “standard” WFS system look like?
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} The decision to include Hann windowing in the simulations was driven by the goal of providing a generalized investigation that accounts for aperture weighting, which is often a practical requirement in Wave Field Synthesis (WFS). While it is true that tapering is frequently omitted in certain geometries, such as closed rectangular arrays, its application is critical in many other standard WFS scenarios:
+    \begin{itemize}
+        \item \textbf{Linear/Single-line Arrays:} For finite linear SSD segments, tapering is inherently required to suppress the strong edge-diffraction artifacts that would otherwise corrupt the synthesized field across the entire frequency range.
+        \item \textbf{Focused Sources:} As discussed in Part I of this work, tapering is crucial even for circular SSDs when synthesizing focused sources. Without it, the abrupt truncation of the active secondary source selection leads to severe spatial and spectral artifacts.
+        \item \textbf{Model Validation:} Using a Hann window allowed us to validate the predicted cutoff frequency against a ``clean'' frequency response. In a ``standard'' untapered system (rectangular windowing), the fundamental low-frequency roll-off trend remains the same; however, it becomes obscured by high-frequency ripples caused by edge diffraction.
+    \end{itemize}
+    By including the tapering coefficient in our analysis, we demonstrate that the proposed model correctly predicts the transition to a flat response even when the effective aperture is modified by a window function.
+\end{myresponse}
+
+
+\begin{reviewercomment}
+    “In the transition band between the two limits $f_{c,1}$ and $f_{c,2}$, the synthesized response is typically 4–5 dB down…”: What does typically mean? At the lower end or on average? In Figs. 5 and 6, it appears that the maximum deviation is around this value at frequencies where a subwoofer would typically be used. The practical relevance of these results warrants further discussion.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} We thank the reviewer for this point. We have revised the manuscript to provide a more rigorous definition of the behavior within the transition band and its practical relevance:
+    \begin{itemize}
+        \item \textbf{Definition of ``Typically'':} It is now made clear in the manuscript that within this transition band, the behavior of the response cannot be modeled purely analytically and may appear erratic or ``random'' due to fluctuating interference. The original wording referred to the fact that, at the lower cutoff frequency, a magnitude loss of approximately 4–5~dB is observed relative to the nominal 0~dB high-frequency level. We acknowledge that the initial phrasing was sloppy, and it has been reworded for precision.
+        \item \textbf{Physical Behavior:} The response exhibits a specific trend during this transition: as the Stationary Phase Approximation (SPA) begins to hold on only one side of the stationary position, an overall slope of approximately 5~dB/decade is exhibited. For on-center positions where the two limits coincide, the response exhibits a steeper roll-off of approximately 10~dB/dec below the cutoff.
+        \item \textbf{Practical Relevance:} Regarding the frequencies involved, we have added a discussion highlighting that while $f_c$ resides in the subwoofer range for central listeners, the spatial maps in Fig. 7 demonstrate that $f_c$ climbs into the mid-frequency range (500~Hz to 1~kHz) for eccentric receiver positions. In these cases, the coloration moves out of the subwoofer's domain and into the primary reproduction band, making the model essential for defining the stable listening area or designing position-dependent spectral compensation.
+    \end{itemize}
+    \textbf{Changes in Manuscript:} Sections III.C and V have been expanded to clarify the non-analytical nature of the transition band and to provide a more detailed discussion on the transition slopes and the practical impact on timbre consistency for eccentric listening positions.
+\end{myresponse}
+
+\begin{reviewercomment}
+    Fig.8: Is the lower cut-off frequency computed by taking the max of the two cut-off frequencies? Alpha has not been used in Fig.7. What does the colour in the left plots denote? The dashed lines in (b) and (d) are not explained.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} Yes, $f_c$ is the maximum of the two limits. 
+    The color scale has been clarified in the caption, and the use of the symbol $\alpha$ and dashed lines have been omitted.
+\end{myresponse}
+
+\begin{reviewercomment}
+    Sec.V. “…two asymmetric critical frequencies…”: Asymmetric with respect to what?
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} We have clarified this terminology in the revised manuscript. 
+    The frequencies and are asymmetric with respect to the stationary point's position within the active aperture. 
+    For off-center receiver positions, the stationary point is shifted toward one end of the SSD, resulting in different effective window lengths on either side of that point. 
+    This geometric asymmetry leads to two distinct partial cutoff frequencies that define the boundaries of the transition band.
+\end{myresponse}
+
+\begin{reviewercomment}
+    “The results provide concrete design guidance: selecting an appropriate virtual-source model for a given SSD geometry;…”: In practical applications it is not reasonable to limit the virtual source model.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} We agree with the reviewer that limiting the choice of virtual source models is not practical for sound design. 
+    We have reworded our conclusion to emphasize that these results provide a "map for spectral consistency" rather than a set of restrictions. 
+    The goal is to identify regions where a flat response is guaranteed and to highlight extreme cases—such as a virtual source in the immediate proximity of the SSD—where significant low-frequency loss and coloration are physically inevitable. 
+    This allows engineers to anticipate these effects and apply appropriate position-dependent compensation.
+\end{myresponse}
+
+\begin{reviewercomment}
+    As mentioned before, practical WFS systems employ subwoofers for low-frequency reproduction. The results should be discussed in light of a satellite (WFS system) subwoofer frequency split.
+\end{reviewercomment}
+\begin{myresponse}
+    \textbf{Response:} We have added a discussion addressing the relationship between our findings and practical satellite-subwoofer configurations. 
+    While the cutoff frequency is typically around Hz for central listeners (matching typical subwoofer crossover frequencies), our spatial analysis demonstrates that can climb above Hz at eccentric receiver positions. 
+    In these scenarios, the spectral roll-off moves out of the subwoofer's range and into the primary loudspeakers' range, causing audible coloration that a global subwoofer crossover cannot address. 
+    Our model is therefore essential for defining the stable listening area where the satellite speakers can maintain timbre consistency.
+\end{myresponse}
+
+\vspace{1cm}
+
+We believe the revised manuscript is significantly improved and addresses the reviewers' concerns.
+
+Sincerely,
+
+Gergely Firtha
 
 \end{document}
